@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portafolio profesional de un desarrollador Full Stack especializado en Java, Spring Boot y Vue.js">
+    <title>Portafolio | Full Stack Developer</title>
+    
+    <!-- Preload critical CSS -->
+    <link rel="preload" href="./css/reset.css" as="style">
+    <link rel="preload" href="./css/variables.css" as="style">
+    <link rel="preload" href="./css/base.css" as="style">
+    
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/variables.css">
+    <link rel="stylesheet" href="./css/base.css">
+    
+    <!-- Section-specific CSS -->
+    <link rel="stylesheet" href="./css/header.css">
+    <link rel="stylesheet" href="./css/hero.css">
+    <link rel="stylesheet" href="./css/skills.css">
+    <link rel="stylesheet" href="./css/projects.css">
+    <link rel="stylesheet" href="./css/timeline.css">
+    <link rel="stylesheet" href="./css/contact.css">
+    
+    <!-- Theme CSS (will be toggled by JS) -->
+    <link rel="stylesheet" href="./css/theme-light.css" id="theme-style">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="./img/favicon.svg">
+    <link rel="alternate icon" href="./img/favicon.ico">
+</head>
+<body>
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+    
+    <!-- Theme Toggle -->
+    <button id="theme-toggle" class="theme-toggle" aria-label="Cambiar tema">
+        <span class="theme-icon" aria-hidden="true">🌓</span>
+    </button>
+
+    <!-- Header with Navigation -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="#" class="logo">Portafolio</a>
+            <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu">
+                <span class="hamburger" aria-hidden="true"></span>
+                <span class="sr-only">Menú</span>
+            </button>
+            <ul id="nav-menu" class="nav-menu">
+                <li><a href="#inicio" class="nav-link">Inicio</a></li>
+                <li><a href="#habilidades" class="nav-link">Habilidades</a></li>
+                <li><a href="#proyectos" class="nav-link">Proyectos</a></li>
+                <li><a href="#timeline" class="nav-link">Trayectoria</a></li>
+                <li><a href="#contacto" class="nav-link">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <!-- Hero Section -->
+        <section id="inicio" class="section hero-section">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">Hola, soy <span class="highlight">Clider Fernando</span></h1>
+                    <p class="hero-subtitle">Desarrollador Full Stack</p>
+                    <p class="hero-description">Especializado en crear soluciones informaticas.</p>
+                    <div class="hero-cta">
+                        <a href="#proyectos" class="btn btn-primary">Ver mis proyectos</a>
+                        <a href="#contacto" class="btn btn-secondary">Contáctame</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="profile-image"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="habilidades" class="section skills-section">
+            <div class="container">
+                <h2 class="section-title">Habilidades Técnicas</h2>
+                <div id="skills-container" class="skills-grid">
+                    <!-- Skills will be loaded from JSON -->
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Projects Section -->
+        <section id="proyectos" class="section projects-section">
+            <div class="container">
+                <h2 class="section-title">Proyectos Destacados</h2>
+                <div id="projects-container" class="projects-grid">
+                    <!-- Projects will be loaded from JSON -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Timeline Section -->
+        <section id="timeline" class="section timeline-section">
+            <div class="container">
+                <h2 class="section-title">Mi Trayectoria</h2>
+                <div id="timeline-container" class="timeline">
+                    <!-- Timeline will be loaded from JSON -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contacto" class="section contact-section">
+            <div class="container">
+                <h2 class="section-title">Contacto</h2>
+                <div class="contact-grid">
+                    <div class="contact-info">
+                        <h3>¡Hablemos!</h3>
+                        <p>¿Tienes un proyecto en mente o quieres conectarte? No dudes en contactarme.</p>
+                        <div class="social-links">
+                            <a href="#" target="_blank" rel="noopener noreferrer" class="social-link">
+                                <i class="icon-github"></i> GitHub
+                            </a>
+                            <a href="#" target="_blank" rel="noopener noreferrer" class="social-link">
+                                <i class="icon-linkedin"></i> LinkedIn
+                            </a>
+                            <a href="mailto:tu@email.com" class="social-link">
+                                <i class="icon-email"></i> Email
+                            </a>
+                        </div>
+                    </div>
+                    <form id="contact-form" class="contact-form" novalidate aria-label="Formulario de contacto">
+                        <div role="alert" id="form-errors" class="form-message error" hidden>
+                            Por favor, corrige los errores en el formulario antes de enviar.
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="name">
+                                Nombre completo
+                                <span class="required" aria-hidden="true">*</span>
+                                <span class="sr-only">(requerido)</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                id="name" 
+                                name="name" 
+                                required 
+                                minlength="2"
+                                maxlength="50"
+                                autocomplete="name"
+                                aria-required="true"
+                                aria-describedby="name-help name-errors"
+                            >
+                            <div id="name-help" class="help-text">Tu nombre completo (mínimo 2 caracteres, solo letras y espacios)</div>
+                            <div id="name-errors" class="error-message" role="alert" aria-live="polite"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">
+                                Correo electrónico
+                                <span class="required" aria-hidden="true">*</span>
+                                <span class="sr-only">(requerido)</span>
+                            </label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                required
+                                autocomplete="email"
+                                aria-required="true"
+                                aria-describedby="email-help email-errors"
+                                inputmode="email"
+                            >
+                            <div id="email-help" class="help-text">Tu dirección de correo electrónico (ejemplo: nombre@dominio.com)</div>
+                            <div id="email-errors" class="error-message" role="alert" aria-live="polite"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">
+                                Mensaje
+                                <span class="required" aria-hidden="true">*</span>
+                                <span class="sr-only">(requerido)</span>
+                            </label>
+                            <textarea 
+                                id="message" 
+                                name="message" 
+                                rows="5" 
+                                required
+                                minlength="10"
+                                aria-required="true"
+                                aria-describedby="message-help message-errors"
+                            ></textarea>
+                            <div id="message-help" class="help-text">Describe tu consulta o proyecto (mínimo 10 caracteres)</div>
+                            <div id="message-errors" class="error-message" role="alert" aria-live="polite"></div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button 
+                                type="submit" 
+                                class="btn btn-primary"
+                                aria-live="polite"
+                            >
+                                <span class="btn__text">Enviar Mensaje</span>
+                                <span class="btn__loading" aria-hidden="true">Enviando...</span>
+                            </button>
+                        </div>
+                        
+                        <p class="form-note">
+                            <span aria-hidden="true">*</span> Campos obligatorios
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; <span id="current-year"></span> Clider Fernando. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="./js/main.js" type="module"></script>
+</body>
+</html>

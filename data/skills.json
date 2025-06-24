@@ -1,0 +1,86 @@
+[
+  {
+    "category": "Frontend Development",
+    "icon": "💻",
+    "skills": [
+      { "name": "HTML5", "level": 95, "icon": "html5" },
+      { "name": "CSS3", "level": 90, "icon": "css3" },
+      { "name": "JavaScript (ES6+)", "level": 88, "icon": "javascript" },
+      { "name": "Vue.js", "level": 85, "icon": "vue" },
+      { "name": "React", "level": 80, "icon": "react" },
+      { "name": "Responsive Design", "level": 90, "icon": "responsive" },
+      { "name": "Sass/LESS", "level": 85, "icon": "sass" },
+      { "name": "Bootstrap/Tailwind", "level": 85, "icon": "bootstrap" }
+    ]
+  },
+  {
+    "category": "Backend Development",
+    "icon": "⚙️",
+    "skills": [
+      { "name": "Java", "level": 92, "icon": "java" },
+      { "name": "Spring Boot", "level": 88, "icon": "spring" },
+      { "name": "Node.js", "level": 85, "icon": "nodejs" },
+      { "name": "Express.js", "level": 82, "icon": "express" },
+      { "name": "RESTful APIs", "level": 90, "icon": "api" },
+      { "name": "GraphQL", "level": 75, "icon": "graphql" },
+      { "name": "Microservices", "level": 80, "icon": "microservices" },
+      { "name": "Serverless", "level": 75, "icon": "serverless" }
+    ]
+  },
+  {
+    "category": "Database & Storage",
+    "icon": "💾",
+    "skills": [
+      { "name": "SQL", "level": 88, "icon": "sql" },
+      { "name": "MySQL/PostgreSQL", "level": 85, "icon": "database" },
+      { "name": "MongoDB", "level": 82, "icon": "mongodb" },
+      { "name": "Redis", "level": 78, "icon": "redis" },
+      { "name": "Elasticsearch", "level": 75, "icon": "elasticsearch" },
+      { "name": "Firebase", "level": 80, "icon": "firebase" },
+      { "name": "AWS S3", "level": 85, "icon": "aws-s3" },
+      { "name": "ORM/ODM", "level": 88, "icon": "orm" }
+    ]
+  },
+  {
+    "category": "DevOps & Cloud",
+    "icon": "☁️",
+    "skills": [
+      { "name": "Docker", "level": 85, "icon": "docker" },
+      { "name": "Kubernetes", "level": 75, "icon": "kubernetes" },
+      { "name": "AWS", "level": 80, "icon": "aws" },
+      { "name": "CI/CD", "level": 85, "icon": "cicd" },
+      { "name": "GitHub Actions", "level": 82, "icon": "github" },
+      { "name": "Jenkins", "level": 78, "icon": "jenkins" },
+      { "name": "Terraform", "level": 70, "icon": "terraform" },
+      { "name": "Nginx", "level": 80, "icon": "nginx" }
+    ]
+  },
+  {
+    "category": "Tools & Workflow",
+    "icon": "🛠️",
+    "skills": [
+      { "name": "Git", "level": 90, "icon": "git" },
+      { "name": "Linux/Unix", "level": 85, "icon": "linux" },
+      { "name": "VSCode", "level": 88, "icon": "vscode" },
+      { "name": "IntelliJ IDEA", "level": 85, "icon": "intellij" },
+      { "name": "JIRA", "level": 80, "icon": "jira" },
+      { "name": "Confluence", "level": 82, "icon": "confluence" },
+      { "name": "Agile/Scrum", "level": 85, "icon": "agile" },
+      { "name": "Figma/Adobe XD", "level": 75, "icon": "figma" }
+    ]
+  },
+  {
+    "category": "Testing & Quality",
+    "icon": "🧪",
+    "skills": [
+      { "name": "JUnit", "level": 88, "icon": "junit" },
+      { "name": "Jest", "level": 85, "icon": "jest" },
+      { "name": "Cypress", "level": 80, "icon": "cypress" },
+      { "name": "Jest", "level": 82, "icon": "jest" },
+      { "name": "Postman", "level": 90, "icon": "postman" },
+      { "name": "Swagger/OpenAPI", "level": 85, "icon": "swagger" },
+      { "name": "SonarQube", "level": 75, "icon": "sonarqube" },
+      { "name": "TDD/BDD", "level": 80, "icon": "tdd" }
+    ]
+  }
+]
