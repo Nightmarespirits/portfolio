@@ -1,0 +1,4 @@
+/** Light theme overrides */
+[data-theme="light"] {
+  color-scheme: light;
+}

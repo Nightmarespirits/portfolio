@@ -157,13 +157,10 @@ document.addEventListener('DOMContentLoaded', () => {
   function initParallax() {
     if (prefersReducedMotion) return;
     
-    const heroBg = document.querySelector('.hero-section::before');
-    if (!heroBg) return;
-    
     window.addEventListener('mousemove', (e) => {
       const x = (window.innerWidth - e.pageX * 0.5) / 100;
       const y = (window.innerHeight - e.pageY * 0.5) / 100;
-      
+
       heroSection.style.setProperty('--parallax-x', `${x}px`);
       heroSection.style.setProperty('--parallax-y', `${y}px`);
     });

@@ -226,13 +226,11 @@ document.addEventListener('DOMContentLoaded', () => {
    */
   function simulateFormSubmission(formData) {
     return new Promise((resolve) => {
-      // Log form data to console (for testing)
+      // Convert form data to object (for potential submission)
       const formDataObj = {};
       formData.forEach((value, key) => {
         formDataObj[key] = value;
       });
-      
-      console.log('Form data to submit:', formDataObj);
       
       // Simulate API call delay
       setTimeout(() => {

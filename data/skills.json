@@ -76,7 +76,7 @@
       { "name": "JUnit", "level": 88, "icon": "junit" },
       { "name": "Jest", "level": 85, "icon": "jest" },
       { "name": "Cypress", "level": 80, "icon": "cypress" },
-      { "name": "Jest", "level": 82, "icon": "jest" },
+      { "name": "Playwright", "level": 82, "icon": "playwright" },
       { "name": "Postman", "level": 90, "icon": "postman" },
       { "name": "Swagger/OpenAPI", "level": 85, "icon": "swagger" },
       { "name": "SonarQube", "level": 75, "icon": "sonarqube" },

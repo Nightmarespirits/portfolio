@@ -5,7 +5,7 @@
 
 class SkillsSection {
   constructor() {
-    this.skillsContainer = document.getElementById('skills');
+    this.skillsContainer = document.getElementById('skills-container');
     
     if (!this.skillsContainer) return;
     
@@ -45,7 +45,6 @@ class SkillsSection {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      console.log("skills data", response)
       this.skillsData = await response.json();
     } catch (error) {
       console.error('Error loading skills data:', error);
@@ -272,7 +271,6 @@ class SkillsSection {
    */
   handleThemeChange() {
     // If you're using theme-specific icons, you can update them here
-    console.log('Theme changed, updating skill icons if needed');
   }
 }
 

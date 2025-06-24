@@ -1,0 +1,17 @@
+/** Contact Section Styles */
+.contact-grid {
+  display: grid;
+  gap: 2rem;
+}
+
+.contact-info {
+  font-size: var(--text-base);
+}
+
+.contact-form .form-group {
+  margin-bottom: 1rem;
+}
+
+.contact-form .form-actions {
+  text-align: right;
+}
