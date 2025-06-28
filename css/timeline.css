@@ -1,0 +1,170 @@
+/* --- Professional Timeline Redesign --- */
+
+/* Main container for the timeline */
+.timeline {
+  position: relative;
+  width: 100%;
+  max-width: 900px; /* Max width for readability */
+  margin: 2rem auto;
+  padding: 2rem 0;
+  border-left: none; /* Remove the old border */
+}
+
+/* The central vertical line */
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 100%;
+  background-color: var(--color-primary);
+  border-radius: 2px;
+}
+
+/* Container for each timeline event item */
+.timeline-item {
+  padding: 1rem 0;
+  position: relative;
+  width: 50%;
+  opacity: 0; /* Initially hidden for animation */
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+/* --- Positioning Items (Left & Right) --- */
+
+/* Odd items are on the left */
+.timeline-item:nth-child(odd) {
+  left: 0;
+  padding-right: 3rem;
+  transform: translateX(-30px); /* Initial animation position */
+}
+
+/* Even items are on the right */
+.timeline-item:nth-child(even) {
+  left: 50%;
+  padding-left: 3rem;
+  transform: translateX(30px); /* Initial animation position */
+}
+
+/* --- The Node on the Central Line --- */
+.timeline-dot {
+  content: '';
+  position: absolute;
+  top: 2.2rem; /* Align with card content */
+  width: 16px;
+  height: 16px;
+  background-color: var(--color-background);
+  border: 3px solid var(--color-primary);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* Position the dot for left-side items */
+.timeline-item:nth-child(odd) .timeline-dot {
+  right: -8px;
+  transform: translateX(50%);
+}
+
+/* Position the dot for right-side items */
+.timeline-item:nth-child(even) .timeline-dot {
+  left: -8px;
+  transform: translateX(-50%);
+}
+
+/* --- The Event Card --- */
+.timeline-content {
+  padding: 1.5rem;
+  background-color: var(--color-background-alt);
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--color-border);
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.timeline-content:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(var(--color-primary-rgb), 0.1);
+}
+
+/* --- The Pointer Arrow from Card to Line --- */
+.timeline-content::before {
+  content: '';
+  position: absolute;
+  top: 2rem;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+/* Arrow for left-side items */
+.timeline-item:nth-child(odd) .timeline-content::before {
+  right: -11px;
+  border-width: 10px 0 10px 10px;
+  border-color: transparent transparent transparent var(--color-border);
+}
+
+/* Arrow for right-side items */
+.timeline-item:nth-child(even) .timeline-content::before {
+  left: -11px;
+  border-width: 10px 10px 10px 0;
+  border-color: transparent var(--color-border) transparent transparent;
+}
+
+/* --- Card Content Typography --- */
+.timeline-year {
+  font-size: 1.1rem;
+  font-weight: var(--font-bold);
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+}
+
+.timeline-event {
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+/* --- Animation Trigger --- */
+.timeline-item.animate {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* --- Responsive Design for Mobile --- */
+@media screen and (max-width: 768px) {
+  .timeline::before {
+    left: 15px; /* Move line to the left */
+    transform: translateX(-50%); /* Center the line itself for perfect alignment */
+  }
+
+  /* All items align to the left */
+  .timeline-item,
+  .timeline-item:nth-child(even) {
+    width: 100%;
+    left: 0;
+    padding-left: 40px; /* Space for line and dot */
+    padding-right: 1rem;
+  }
+  
+  .timeline-item:nth-child(odd) {
+    padding-right: 1rem; /* Reset from desktop */
+  }
+
+  /* Correctly position the dot for ALL items on mobile */
+  .timeline-item .timeline-dot {
+    left: 15px;
+    right: auto; /* Reset right property from desktop styles */
+    transform: translateX(-50%); /* Center the dot perfectly on the line */
+  }
+
+  /* Point arrow to the left for all items */
+  .timeline-item .timeline-content::before,
+  .timeline-item:nth-child(even) .timeline-content::before {
+    left: -11px;
+    right: auto;
+    border-width: 10px 10px 10px 0;
+    border-color: transparent var(--color-border) transparent transparent;
+  }
+}

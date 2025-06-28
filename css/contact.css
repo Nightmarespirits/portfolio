@@ -1,0 +1,210 @@
+/** Contact Section Styles */
+
+.contact-section {
+    padding: var(--section-padding) 0;
+    background-color: var(--color-background-secondary);
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+    .contact-grid {
+        grid-template-columns: 1fr 1.5fr;
+        gap: 4rem;
+    }
+}
+
+.contact-info h3 {
+    font-size: var(--text-xl);
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+}
+
+.contact-info p {
+    font-size: var(--text-base);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-links a {
+    color: var(--color-text-secondary);
+    font-size: 1.5rem;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.social-links a:hover {
+    color: var(--color-primary);
+    transform: translateY(-2px);
+}
+
+/* Form Styles */
+.contact-form .form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.contact-form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+}
+
+.contact-form label .required {
+    color: var(--color-accent);
+    margin-left: 0.25rem;
+}
+
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: var(--text-base);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    background-color: var(--color-background-input);
+    color: var(--color-text-primary);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-form input[type="text"]:focus,
+.contact-form input[type="email"]:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-variant-transparent);
+}
+
+/* Validation States */
+.contact-form .is-invalid {
+    border-color: var(--color-error);
+}
+
+.contact-form .is-invalid:focus {
+    box-shadow: 0 0 0 3px var(--color-error-transparent);
+}
+
+.contact-form .is-valid {
+    border-color: var(--color-success);
+}
+
+.contact-form .is-valid:focus {
+    box-shadow: 0 0 0 3px var(--color-success-transparent);
+}
+
+.contact-form textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.contact-form .help-text {
+    font-size: var(--text-xs);
+    color: var(--color-text-tertiary);
+    margin-top: 0.25rem;
+}
+
+.contact-form .error-message {
+    font-size: var(--text-sm);
+    color: var(--color-error);
+    margin-top: 0.5rem;
+    min-height: 1.2em; /* Prevent layout shift */
+}
+
+/* Toast Notifications */
+#toast-container {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.toast {
+    min-width: 300px;
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    color: var(--color-white);
+    opacity: 0;
+    transform: translateX(100%);
+    animation: slideInToast 0.5s forwards, fadeOutToast 0.5s 4.5s forwards;
+}
+
+.toast--success {
+    background-color: var(--color-success);
+}
+
+.toast--error {
+    background-color: var(--color-error);
+}
+
+@keyframes slideInToast {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeOutToast {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}
+
+.contact-form .form-actions {
+    margin-top: 2rem;
+    text-align: right;
+}
+
+/* Re-using button styles from base.css, but can be specific here if needed */
+.contact-form .btn-primary {
+    /* Styles are inherited, but you can override if needed */
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .contact-form .btn-primary {
+        width: auto;
+    }
+}
+
+/* Añade esto al final de tu archivo css/contact.css */
+
+/* Estilos para la validación de campos del formulario */
+/* Un campo es inválido solo después de que el usuario ha interactuado con él */
+.contact-form :is(input, textarea):user-invalid {
+    border-color: var(--color-danger, #e74c3c); /* Usa un color de error de tus variables o un fallback */
+}
+
+/* Ocultar el texto de "Enviando..." por defecto */
+.btn__loading {
+    display: none;
+}
+
+/* Estilos para el botón cuando está en modo de envío */
+.contact-form button[type="submit"]:disabled .btn__text {
+    display: none;
+}
+
+.contact-form button[type="submit"]:disabled .btn__loading {
+    display: inline-block;
+}

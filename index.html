@@ -23,10 +23,14 @@
     <link rel="stylesheet" href="./css/projects.css">
     <link rel="stylesheet" href="./css/timeline.css">
     <link rel="stylesheet" href="./css/contact.css">
+    <link rel="stylesheet" href="./css/footer.css">
     
     <!-- Theme CSS (will be toggled by JS) -->
     <link rel="stylesheet" href="./css/theme-light.css" id="theme-style">
     
+    <!-- Devicon -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="./img/favicon.svg">
     <link rel="alternate icon" href="./img/favicon.ico">
@@ -34,66 +38,75 @@
 <body>
     <!-- Skip to main content for accessibility -->
     <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
-    
-    <!-- Theme Toggle -->
-    <button id="theme-toggle" class="theme-toggle" aria-label="Cambiar tema">
-        <span class="theme-icon" aria-hidden="true">🌓</span>
-    </button>
 
     <!-- Header with Navigation -->
     <header class="header">
         <nav class="nav-container">
-            <a href="#" class="logo">Portafolio</a>
+            <a href="#hero" class="logo" aria-label="Inicio - Logo CF">
+                <img src="./img/logo.svg" alt="Logo de CF" class="logo-img">
+            </a>
             <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu">
                 <span class="hamburger" aria-hidden="true"></span>
                 <span class="sr-only">Menú</span>
             </button>
             <ul id="nav-menu" class="nav-menu">
-                <li><a href="#inicio" class="nav-link">Inicio</a></li>
-                <li><a href="#habilidades" class="nav-link">Habilidades</a></li>
-                <li><a href="#proyectos" class="nav-link">Proyectos</a></li>
+                <li><a href="#hero" class="nav-link active">Inicio</a></li>
+                <li><a href="#skills" class="nav-link">Habilidades</a></li>
+                <li><a href="#projects" class="nav-link">Proyectos</a></li>
                 <li><a href="#timeline" class="nav-link">Trayectoria</a></li>
-                <li><a href="#contacto" class="nav-link">Contacto</a></li>
+                <li><a href="#contact" class="nav-link">Contacto</a></li>
+                <li class="nav-item-toggle">
+                    <button id="theme-toggle" class="theme-toggle" aria-label="Cambiar tema">
+                        <span class="theme-icon" aria-hidden="true">🌓</span>
+                    </button>
+                </li>
             </ul>
         </nav>
     </header>
 
+
     <main id="main-content">
         <!-- Hero Section -->
-        <section id="inicio" class="section hero-section">
+        <section id="hero" class="section hero-section">
             <div class="container">
                 <div class="hero-content">
                     <h1 class="hero-title">Hola, soy <span class="highlight">Clider Fernando</span></h1>
                     <p class="hero-subtitle">Desarrollador Full Stack</p>
                     <p class="hero-description">Especializado en crear soluciones informaticas.</p>
                     <div class="hero-cta">
-                        <a href="#proyectos" class="btn btn-primary">Ver mis proyectos</a>
-                        <a href="#contacto" class="btn btn-secondary">Contáctame</a>
+                        <a href="#projects" class="btn btn-primary">Ver mis proyectos</a>
+                        <a href="#contact" class="btn btn-secondary">Contáctame</a>
                     </div>
                 </div>
                 <div class="hero-image">
-                    <div class="profile-image"></div>
+                    <img src="./img/profile.jpg" alt="Foto de perfil de Clider Fernando" class="profile-image">
                 </div>
             </div>
         </section>
 
         <!-- Skills Section -->
-        <section id="habilidades" class="section skills-section">
+        <section id="skills" class="section skills-section">
             <div class="container">
                 <h2 class="section-title">Habilidades Técnicas</h2>
                 <div id="skills-container" class="skills-grid">
                     <!-- Skills will be loaded from JSON -->
                 </div>
             </div>
-        </section>
+        </section>  
 
 
         <!-- Projects Section -->
-        <section id="proyectos" class="section projects-section">
+        <section id="projects" class="section projects-section">
             <div class="container">
                 <h2 class="section-title">Proyectos Destacados</h2>
-                <div id="projects-container" class="projects-grid">
+                <div class="projects-filter"><!-- Filter buttons will be rendered here --></div>
+                <div id="projects-container" class="projects-grid collapsed">
                     <!-- Projects will be loaded from JSON -->
+                </div>
+                <div class="load-more-container">
+                    <button id="load-more-btn" class="load-more-btn">
+                        Ver Más Proyectos <span class="icon">▼</span>
+                    </button>
                 </div>
             </div>
         </section>
@@ -109,7 +122,7 @@
         </section>
 
         <!-- Contact Section -->
-        <section id="contacto" class="section contact-section">
+        <section id="contact" class="section contact-section">
             <div class="container">
                 <h2 class="section-title">Contacto</h2>
                 <div class="contact-grid">
@@ -128,7 +141,7 @@
                             </a>
                         </div>
                     </div>
-                    <form id="contact-form" class="contact-form" novalidate aria-label="Formulario de contacto">
+                    <form action="https://formsubmit.co/clidertutayarivera@gmail.com" method="POST" id="contact-form" class="contact-form" aria-label="Formulario de contacto">
                         <div role="alert" id="form-errors" class="form-message error" hidden>
                             Por favor, corrige los errores en el formulario antes de enviar.
                         </div>
@@ -212,14 +225,37 @@
             </div>
         </section>
     </main>
-
     <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <p>&copy; <span id="current-year"></span> Clider Fernando. Todos los derechos reservados.</p>
+        <div class="container footer-container">
+            <div class="footer-main">
+                <div class="footer-about">
+                    <h3 class="footer-title">Clider Fernando</h3>
+                    <p class="footer-description">Desarrollador Full Stack comprometido con la creación de soluciones digitales eficientes y modernas.</p>
+                </div>
+                <div class="footer-links">
+                    <h3 class="footer-title">Enlaces</h3>
+                    <ul class="footer-list">
+                        <li><a href="#hero" class="footer-link">Inicio</a></li>
+                        <li><a href="#skills" class="footer-link">Habilidades</a></li>
+                        <li><a href="#projects" class="footer-link">Proyectos</a></li>
+                        <li><a href="#contact" class="footer-link">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h3 class="footer-title">Sígueme</h3>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon" aria-label="GitHub">GH</a>
+                        <a href="#" class="social-icon" aria-label="LinkedIn">LI</a>
+                        <a href="#" class="social-icon" aria-label="Twitter">TW</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year"></span> Clider Fernando. Todos los derechos reservados.</p>
+            </div>
         </div>
     </footer>
-
     <!-- JavaScript -->
     <script src="./js/main.js" type="module"></script>
 </body>

@@ -50,6 +50,13 @@
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   
+  /* Background Colors (Light Theme) */
+  --color-background: #ffffff; /* Main background */
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f9fafb; /* Zinc 50 */
+  --color-bg-tertiary: #f4f4f5; /* Zinc 100 */
+  --color-bg-inverted: #18181b;
+
   /* Transitions */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition: 250ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -61,144 +68,109 @@
   --container-lg: 1024px;
   --container-xl: 1280px;
   --container-2xl: 1536px;
-}
 
-/* Light Theme (Default) */
-:root {
+  /* Default theme (light mode) */
   color-scheme: light;
   
-  /* Background Colors */
-  --color-bg-primary: #ffffff;
-  --color-bg-secondary: #f9fafb;
-  --color-bg-tertiary: #f3f4f6;
-  --color-bg-inverted: #1f2937;
-  
   /* Text Colors */
-  --color-text-primary: #111827;
-  --color-text-secondary: #4b5563;
+  --color-text-primary: #1f2937;
+  --color-text-secondary: #374151;
   --color-text-tertiary: #6b7280;
   --color-text-inverted: #f9fafb;
   --color-text-muted: #9ca3af;
   
-  /* Accent Colors */
-  --color-primary: #3b82f6;
-  --color-primary-hover: #2563eb;
-  --color-primary-active: #1d4ed8;
+  /* Accent Colors (Orange) */
+  --color-primary: #f97316; /* Orange 500 */
+  --color-primary-hover: #ea580c; /* Orange 600 */
+  --color-primary-active: #c2410c; /* Orange 700 */
+  
   --color-secondary: #10b981;
   --color-accent: #8b5cf6;
   --color-danger: #ef4444;
   --color-warning: #f59e0b;
-  --color-success: #10b981;
+  --color-success: #22c55e;
   --color-info: #3b82f6;
+
+  /* Transparent variants for focus rings */
+  --color-primary-variant-transparent: rgba(249, 115, 22, 0.2);
+  --color-success-transparent: rgba(34, 197, 94, 0.2);
+  --color-danger-transparent: rgba(239, 68, 68, 0.2);
+
+  /* Transparent Colors for Focus Rings */
+  --color-primary-variant-transparent: rgba(249, 115, 22, 0.15);
+  --color-success-transparent: rgba(34, 197, 94, 0.15);
+  --color-error-transparent: rgba(239, 68, 68, 0.15);
   
   /* Border Colors */
   --color-border: #e5e7eb;
   --color-border-hover: #d1d5db;
   
-  /* Overlay */
+  /* Other colors */
   --color-overlay: rgba(0, 0, 0, 0.5);
-  --color-backdrop: rgba(0, 0, 0, 0.1);
-  
-  /* Code Block */
-  --color-code-bg: #f3f4f6;
-  --color-code-text: #111827;
-  --color-code-comment: #6b7280;
-  --color-code-keyword: #8b5cf6;
-  --color-code-string: #10b981;
-  --color-code-number: #f59e0b;
-  --color-code-function: #3b82f6;
+  --color-backdrop: rgba(255, 255, 255, 0.5);
+
+  /* Logo Colors */
+  --logo-main-color: var(--color-text-secondary);
+  --logo-accent-color: var(--color-primary);
 }
 
-/* Dark Theme */
+/* Dark theme overrides */
 [data-theme="dark"] {
   color-scheme: dark;
   
   /* Background Colors */
-  --color-bg-primary: #111827;
-  --color-bg-secondary: #1f2937;
-  --color-bg-tertiary: #374151;
-  --color-bg-inverted: #f9fafb;
+  --color-background: #18181b; /* Main background, same as primary */
+  --color-bg-primary: #18181b; /* Zinc 900 */
+  --color-bg-secondary: #27272a; /* Zinc 800 */
+  --color-bg-tertiary: #3f3f46; /* Zinc 700 */
+  --color-bg-inverted: #ffffff;
   
   /* Text Colors */
-  --color-text-primary: #f9fafb;
-  --color-text-secondary: #e5e7eb;
-  --color-text-tertiary: #d1d5db;
-  --color-text-inverted: #111827;
-  --color-text-muted: #9ca3af;
+  --color-text-primary: #f4f4f5; /* Zinc 100 */
+  --color-text-secondary: #e4e4e7; /* Zinc 200 */
+  --color-text-tertiary: #a1a1aa; /* Zinc 400 */
+  --color-text-inverted: #18181b;
+  --color-text-muted: #71717a; /* Zinc 500 */
+
+  /* Accent Colors (Orange) */
+  --color-primary: #fb923c; /* Orange 400 */
+  --color-primary-hover: #f97316; /* Orange 500 */
+  --color-primary-active: #ea580c; /* Orange 600 */
   
-  /* Accent Colors */
-  --color-primary: #60a5fa;
-  --color-primary-hover: #3b82f6;
-  --color-primary-active: #2563eb;
+  /* Border Colors */
+  --color-border: #3f3f46; /* Zinc 700 */
+  --color-border-hover: #52525b; /* Zinc 600 */
+
+  /* Re-define other colors for dark theme if needed */
   --color-secondary: #34d399;
   --color-accent: #a78bfa;
   --color-danger: #f87171;
   --color-warning: #fbbf24;
   --color-success: #34d399;
   --color-info: #60a5fa;
-  
-  /* Border Colors */
-  --color-border: #374151;
-  --color-border-hover: #4b5563;
-  
-  /* Overlay */
+
+  /* Transparent variants for focus rings */
+  --color-primary-variant-transparent: rgba(251, 146, 60, 0.2);
+  --color-success-transparent: rgba(52, 211, 153, 0.2);
+  --color-danger-transparent: rgba(248, 113, 113, 0.2);
+
+  /* Transparent Colors for Focus Rings */
+  --color-primary-variant-transparent: rgba(251, 146, 60, 0.15);
+  --color-success-transparent: rgba(52, 211, 153, 0.15);
+  --color-error-transparent: rgba(248, 113, 113, 0.15);
   --color-overlay: rgba(0, 0, 0, 0.7);
   --color-backdrop: rgba(255, 255, 255, 0.1);
-  
-  /* Code Block */
-  --color-code-bg: #1f2937;
-  --color-code-text: #f9fafb;
-  --color-code-comment: #9ca3af;
-  --color-code-keyword: #a78bfa;
-  --color-code-string: #34d399;
-  --color-code-number: #fbbf24;
-  --color-code-function: #60a5fa;
+
+  /* Logo Colors */
+  --logo-main-color: var(--color-text-primary);
+  --logo-accent-color: var(--color-primary);
 }
 
 /* System preference for dark mode */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
-    
-    /* Background Colors */
-    --color-bg-primary: #111827;
-    --color-bg-secondary: #1f2937;
-    --color-bg-tertiary: #374151;
-    --color-bg-inverted: #f9fafb;
-    
-    /* Text Colors */
-    --color-text-primary: #f9fafb;
-    --color-text-secondary: #e5e7eb;
-    --color-text-tertiary: #d1d5db;
-    --color-text-inverted: #111827;
-    --color-text-muted: #9ca3af;
-    
-    /* Accent Colors */
-    --color-primary: #60a5fa;
-    --color-primary-hover: #3b82f6;
-    --color-primary-active: #2563eb;
-    --color-secondary: #34d399;
-    --color-accent: #a78bfa;
-    --color-danger: #f87171;
-    --color-warning: #fbbf24;
-    --color-success: #34d399;
-    --color-info: #60a5fa;
-    
-    /* Border Colors */
-    --color-border: #374151;
-    --color-border-hover: #4b5563;
-    
-    /* Overlay */
-    --color-overlay: rgba(0, 0, 0, 0.7);
-    --color-backdrop: rgba(255, 255, 255, 0.1);
-    
-    /* Code Block */
-    --color-code-bg: #1f2937;
-    --color-code-text: #f9fafb;
-    --color-code-comment: #9ca3af;
-    --color-code-keyword: #a78bfa;
-    --color-code-string: #34d399;
-    --color-code-number: #fbbf24;
-    --color-code-function: #60a5fa;
+  :root:not([data-theme="dark"]) {
+    /* The JS will set data-theme="dark", which applies all the styles above. */
+    /* This block is now mainly for no-JS fallbacks or can be left empty */
+    /* as the JS-driven approach is more robust. */
   }
 }

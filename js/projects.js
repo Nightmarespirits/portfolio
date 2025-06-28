@@ -9,11 +9,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const filterContainer = document.querySelector('.projects-filter');
   const loadingContainer = document.createElement('div');
   loadingContainer.className = 'projects-loading';
+  const loadMoreBtn = document.getElementById('load-more-btn');
   
   // State
   let projects = [];
   let activeFilter = 'all';
   let isModalOpen = false;
+  let isExpanded = false;
+  const PROJECTS_PER_ROW = 3; // Número de proyectos en la primera fila
   
   // Initialize the projects section
   async function initProjects() {
@@ -32,6 +35,11 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // Initialize modal event listeners
       initModal();
+      
+      // Initialize load more button
+      if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', toggleProjectsVisibility);
+      }
       
       // Initialize intersection observer for animations
       initIntersectionObserver();
@@ -87,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Load projects from JSON file
   async function loadProjects() {
     try {
-      const response = await fetch('/data/projects.json');
+      const response = await fetch('./data/projects.json');
       if (!response.ok) {
         throw new Error('Failed to load projects');
       }
@@ -173,125 +181,100 @@ document.addEventListener('DOMContentLoaded', () => {
       ? projects 
       : projects.filter(project => project.categories.includes(activeFilter));
     
-    // Clear existing projects
-    projectsContainer.innerHTML = '';
-    
-    // Show message if no projects found
     if (filteredProjects.length === 0) {
       projectsContainer.innerHTML = `
         <div class="no-projects">
-          <p>No projects found in this category. Check back soon!</p>
+          <p>No hay proyectos disponibles con el filtro actual.</p>
         </div>
       `;
+      
+      loadMoreBtn.style.display = 'none';
       return;
     }
     
-    // Render projects
-    filteredProjects.forEach((project, index) => {
-      const projectElement = createProjectElement(project, index);
-      projectsContainer.appendChild(projectElement);
-      
-      // Add animation delay based on index
-      projectElement.style.animationDelay = `${index * 0.1}s`;
-    });
+    // Render each project
+    projectsContainer.innerHTML = filteredProjects
+      .map((project, index) => {
+        const isVisible = index < PROJECTS_PER_ROW;
+        return createProjectCard(project, isVisible);
+      })
+      .join('');
+    
+    // Show or hide the load more button based on number of projects
+    if (filteredProjects.length <= PROJECTS_PER_ROW) {
+      loadMoreBtn.style.display = 'none';
+    } else {
+      loadMoreBtn.style.display = 'flex';
+    }
+    
+    // Reset expanded state when changing filters
+    if (isExpanded) {
+      toggleProjectsVisibility();
+    }
   }
   
-  // Create project card element
-  function createProjectElement(project, index) {
-    const { id, title, description, image, categories, tags, links, featured } = project;
+  // Create HTML for a project card
+  function createProjectCard(project, isVisible = true) {
+    const visibilityClass = isVisible ? '' : 'hidden';
     
-    const projectElement = document.createElement('article');
-    projectElement.className = 'project-card';
-    projectElement.dataset.id = id;
-    projectElement.tabIndex = 0;
-    projectElement.setAttribute('role', 'button');
-    projectElement.setAttribute('aria-label', `View ${title} project details`);
-    
-    // Featured badge
-    const featuredBadge = featured 
-      ? `<span class="project-badge" aria-hidden="true">Featured</span>` 
-      : '';
-    
-    // Categories
-    const categoryBadges = categories.map(cat => 
-      `<span class="project-category">${formatCategory(cat)}</span>`
-    ).join('');
-    
-    // Tags
-    const tagElements = tags ? tags.map(tag => 
-      `<span class="project-tag">${tag}</span>`
-    ).join('') : '';
-    
-    // Links
-    const linkElements = links ? Object.entries(links).map(([type, url]) => {
-      const icon = type === 'demo' ? '🌐' : type === 'code' ? '💻' : '🔍';
-      const text = type === 'demo' ? 'Live Demo' : type === 'code' ? 'View Code' : 'Details';
-      return `
-        <a href="${url}" class="project-link" target="_blank" rel="noopener noreferrer" 
-           data-action="${type === 'details' ? 'view-details' : type}">
-          <span class="icon">${icon}</span>
-          <span>${text}</span>
-        </a>
-      `;
-    }).join('') : '';
-    
-    projectElement.innerHTML = `
-      <div class="project-image">
-        ${featuredBadge}
-        <img src="${image || '/img/projects/placeholder.jpg'}" alt="${title}" loading="lazy">
-      </div>
-      <div class="project-content">
-        ${categoryBadges}
-        <h3 class="project-title">${title}</h3>
-        <p class="project-description">${description}</p>
-        ${tagElements ? `<div class="project-tags">${tagElements}</div>` : ''}
-        ${linkElements ? `<div class="project-links">${linkElements}</div>` : ''}
-      </div>
+    return `
+      <article class="project-card ${visibilityClass}" data-category="${project.categories?.join(' ')}" tabindex="0">
+        <div class="project-image">
+          <img src="${project.image || './img/projects/placeholder.jpg'}" alt="Imagen del proyecto ${project.title}" loading="lazy">
+          ${project.featured ? '<span class="project-featured">Destacado</span>' : ''}
+        </div>
+        <div class="project-content">
+          <h3 class="project-title">${project.title}</h3>
+          <p class="project-description">${project.description}</p>
+          <div class="project-tags">
+            ${project.tags?.map(tag => `<span class="project-tag">${tag}</span>`).join('') || ''}
+          </div>
+          <div class="project-links">
+            ${project.links?.demo ? `<a href="${project.links.demo}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Demo <span class="icon">→</span></a>` : ''}
+            ${project.links?.code ? `<a href="${project.links.code}" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Código <span class="icon">↗</span></a>` : ''}
+            <button class="btn btn-outline project-details-btn" data-project-id="${project.id}">Detalles</button>
+          </div>
+        </div>
+      </article>
     `;
-    
-    // Add click event to open modal
-    projectElement.addEventListener('click', (e) => {
-      // Don't trigger if clicking on a link
-      if (e.target.tagName === 'A' || e.target.closest('a')) {
-        const link = e.target.tagName === 'A' ? e.target : e.target.closest('a');
-        if (link.dataset.action === 'view-details') {
-          e.preventDefault();
-          openProjectModal(project);
-        }
-        return;
-      }
-      openProjectModal(project);
-    });
-    
-    // Add keyboard navigation
-    projectElement.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        openProjectModal(project);
-      }
-    });
-    
-    return projectElement;
   }
   
-  // Initialize Intersection Observer for animations
-  function initIntersectionObserver() {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('animate');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    });
+  // Toggle projects visibility
+  function toggleProjectsVisibility() {
+    isExpanded = !isExpanded;
     
-    // Observe all project cards
-    document.querySelectorAll('.project-card').forEach(card => {
-      observer.observe(card);
-    });
+    if (isExpanded) {
+      // Expandir la vista
+      projectsContainer.classList.remove('collapsed');
+      loadMoreBtn.classList.add('expanded');
+      loadMoreBtn.innerHTML = 'Ver Menos <span class="icon">▲</span>';
+      
+      // Animar las tarjetas ocultas con un ligero retraso entre cada una
+      const hiddenCards = document.querySelectorAll('.project-card.hidden');
+      hiddenCards.forEach((card, index) => {
+        setTimeout(() => {
+          card.classList.remove('hidden');
+          card.classList.add('reveal');
+        }, index * 100); // 100ms de retraso entre cada card
+      });
+    } else {
+      // Colapsar la vista
+      projectsContainer.classList.add('collapsed');
+      loadMoreBtn.classList.remove('expanded');
+      loadMoreBtn.innerHTML = 'Ver Más Proyectos <span class="icon">▼</span>';
+      
+      // Scroll hacia el inicio de la sección si es necesario
+      const projectsSection = document.getElementById('projects');
+      if (projectsSection) {
+        const headerHeight = document.querySelector('header')?.offsetHeight || 0;
+        const sectionTop = projectsSection.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
+        
+        window.scrollTo({
+          top: sectionTop,
+          behavior: 'smooth'
+        });
+      }
+    }
   }
   
   // Initialize modal
@@ -497,6 +480,26 @@ document.addEventListener('DOMContentLoaded', () => {
         ]
       }
     ];
+  }
+  
+  // Initialize Intersection Observer for animations
+  function initIntersectionObserver() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
+    
+    // Observe all project cards
+    document.querySelectorAll('.project-card').forEach(card => {
+      observer.observe(card);
+    });
   }
   
   // Initialize the projects section

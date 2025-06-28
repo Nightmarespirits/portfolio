@@ -101,71 +101,68 @@
   opacity: 0;
   transform: translateY(20px);
   animation: fadeInUp 0.8s ease-out 0.8s forwards;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .profile-image {
-  position: relative;
-  width: 100%;
-  padding-bottom: 100%;
+  width: 300px;
+  height: 300px;
   border-radius: 50%;
-  overflow: hidden;
-  margin: 0 auto;
-  background-color: var(--color-bg-tertiary);
-  border: 4px solid var(--color-primary);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  object-fit: cover;
+  border: 5px solid var(--color-primary-light);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 0 0 10px var(--color-background-secondary);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.profile-image::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(var(--color-primary-rgb), 0.2) 0%,
-    rgba(var(--color-primary-rgb), 0.1) 100%
-  );
-  z-index: 1;
-  border-radius: 50%;
+.profile-image:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15), 0 0 0 10px var(--color-background-secondary);
 }
 
-.scroll-down {
+.scroll-down-indicator {
   position: absolute;
   bottom: 2rem;
   left: 50%;
   transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-decoration: none;
-  color: var(--color-text-secondary);
-  font-size: 0.875rem;
-  font-weight: var(--font-medium);
+  z-index: 3;
   opacity: 0;
-  animation: fadeIn 1s ease-out 1.4s forwards;
+  animation: fadeIn 1s ease-out 2s forwards;
 }
 
-.scroll-down:hover {
-  color: var(--color-primary);
+.scroll-down-indicator .mouse {
+  width: 24px;
+  height: 40px;
+  border: 2px solid var(--color-text-secondary);
+  border-radius: 12px;
+  position: relative;
 }
 
-.scroll-down-icon {
-  display: block;
-  width: 2rem;
-  height: 2rem;
-  margin-bottom: 0.5rem;
-  animation: bounce 2s infinite;
+.scroll-down-indicator .scroll-wheel {
+  width: 4px;
+  height: 8px;
+  background-color: var(--color-text-secondary);
+  border-radius: 2px;
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: scroll-anim 2s ease-in-out infinite;
 }
 
-/* Animations */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+@keyframes scroll-anim {
+  0% {
+    opacity: 1;
+    top: 8px;
   }
+  100% {
+    opacity: 0;
+    top: 20px;
+  }
+}
+
+@keyframes fadeInUp {
   to {
     opacity: 1;
     transform: translateY(0);
@@ -279,6 +276,29 @@
   height: 400px;
   bottom: -200px;
   left: -200px;
+}
+
+.profile-image {
+  width: 280px;
+  height: 280px;
+  object-fit: cover;
+  border: 4px solid var(--color-primary);
+  animation: morph 8s ease-in-out infinite;
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  transition: all 0.5s ease-in-out;
+  margin: 0 auto; /* Center the image within its container */
+}
+
+@keyframes morph {
+  0% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+  50% {
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+  }
+  100% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
 }
 
 /* Animation for the decorative elements */
