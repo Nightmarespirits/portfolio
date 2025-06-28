@@ -1,7 +1,7 @@
 /** Contact Section Styles */
 
 .contact-section {
-    padding: var(--section-padding) 0;
+    padding: var(--section-padding) 0 calc(var(--section-padding) + 2rem);
     background-color: var(--color-background-secondary);
 }
 
@@ -185,6 +185,15 @@
     .contact-form .btn-primary {
         width: auto;
     }
+}
+
+/* Estilo para la nota de campos obligatorios */
+.form-note {
+    margin-top: 1.5rem;
+    font-size: var(--text-xs);
+    color: #b71c1c; /* Rojo oscuro para dar énfasis */
+    font-weight: 500;
+    text-align: center;
 }
 
 /* Añade esto al final de tu archivo css/contact.css */

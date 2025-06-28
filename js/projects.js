@@ -6,14 +6,12 @@
 document.addEventListener('DOMContentLoaded', () => {
   // DOM Elements
   const projectsContainer = document.querySelector('.projects-grid');
-  const filterContainer = document.querySelector('.projects-filter');
   const loadingContainer = document.createElement('div');
   loadingContainer.className = 'projects-loading';
   const loadMoreBtn = document.getElementById('load-more-btn');
   
   // State
   let projects = [];
-  let activeFilter = 'all';
   let isModalOpen = false;
   let isExpanded = false;
   const PROJECTS_PER_ROW = 3; // Número de proyectos en la primera fila
@@ -26,9 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // Load projects data
       await loadProjects();
-      
-      // Initialize filter buttons
-      initFilters();
+
       
       // Render projects
       renderProjects();
@@ -153,55 +149,73 @@ document.addEventListener('DOMContentLoaded', () => {
       .join(' ');
   }
   
-  // Filter projects by category
-  function filterProjects(category) {
-    if (activeFilter === category) return;
-    
-    // Update active filter
-    activeFilter = category;
-    
-    // Update active button
-    const buttons = filterContainer.querySelectorAll('.filter-btn');
-    buttons.forEach(btn => {
-      if (btn.dataset.filter === category) {
-        btn.classList.add('active');
-      } else {
-        btn.classList.remove('active');
-      }
-    });
-    
-    // Re-render projects
-    renderProjects();
-  }
   
   // Render projects based on active filter
   function renderProjects() {
     // Filter projects
-    const filteredProjects = activeFilter === 'all' 
-      ? projects 
-      : projects.filter(project => project.categories.includes(activeFilter));
-    
-    if (filteredProjects.length === 0) {
+    if (projects.length === 0) {
       projectsContainer.innerHTML = `
         <div class="no-projects">
-          <p>No hay proyectos disponibles con el filtro actual.</p>
+          <p>No hay proyectos disponibles.</p>
         </div>
       `;
       
       loadMoreBtn.style.display = 'none';
       return;
     }
-    
     // Render each project
-    projectsContainer.innerHTML = filteredProjects
+    projectsContainer.innerHTML = projects
       .map((project, index) => {
         const isVisible = index < PROJECTS_PER_ROW;
         return createProjectCard(project, isVisible);
       })
       .join('');
     
+    // Agregar event listeners a las tarjetas de proyectos
+    document.querySelectorAll('.project-card').forEach(card => {
+      // Hacer la tarjeta completa clickeable
+      card.addEventListener('click', (e) => {
+        // Si el clic fue en un enlace o botón, no hacemos nada para permitir su comportamiento
+        if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || 
+            e.target.closest('a') || e.target.closest('button')) {
+          return;
+        }
+        
+        const projectId = card.dataset.projectId;
+        const project = projects.find(p => p.id === projectId);
+        if (project) {
+          openProjectModal(project);
+        }
+      });
+      
+      // Añadir interactividad con teclado para accesibilidad
+      card.setAttribute('tabindex', '0');
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          const projectId = card.dataset.projectId;
+          const project = projects.find(p => p.id === projectId);
+          if (project) {
+            openProjectModal(project);
+          }
+        }
+      });
+    });
+    
+    // Agregar event listeners a los botones de detalles
+    document.querySelectorAll('.project-details-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation(); // Evitar que se propague al contenedor
+        const projectId = btn.dataset.projectId;
+        const project = projects.find(p => p.id === projectId);
+        if (project) {
+          openProjectModal(project);
+        }
+      });
+    });
+    
     // Show or hide the load more button based on number of projects
-    if (filteredProjects.length <= PROJECTS_PER_ROW) {
+    if (projects.length <= PROJECTS_PER_ROW) {
       loadMoreBtn.style.display = 'none';
     } else {
       loadMoreBtn.style.display = 'flex';
@@ -213,26 +227,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
   
-  // Create HTML for a project card
-  function createProjectCard(project, isVisible = true) {
-    const visibilityClass = isVisible ? '' : 'hidden';
+  // Create project card
+  function createProjectCard(project, visible = true) {
+    const { id, title, description, image, categories, tags } = project;
     
     return `
-      <article class="project-card ${visibilityClass}" data-category="${project.categories?.join(' ')}" tabindex="0">
+      <article class="project-card ${visible ? '' : 'hidden'}" data-project-id="${id}">
         <div class="project-image">
-          <img src="${project.image || './img/projects/placeholder.jpg'}" alt="Imagen del proyecto ${project.title}" loading="lazy">
-          ${project.featured ? '<span class="project-featured">Destacado</span>' : ''}
+          <img src="${visible ? (image || './img/projects/placeholder.jpg') : ''}" 
+               data-src="${image || './img/projects/placeholder.jpg'}" 
+               alt="${title}" 
+               loading="${visible ? 'eager' : 'lazy'}">
         </div>
         <div class="project-content">
-          <h3 class="project-title">${project.title}</h3>
-          <p class="project-description">${project.description}</p>
+          <span class="project-category">${formatCategory(categories?.[0] || 'project')}</span>
+          <h3 class="project-title">${title}</h3>
+          <p class="project-description">${description.length > 100 ? description.substring(0, 100) + '...' : description}</p>
           <div class="project-tags">
-            ${project.tags?.map(tag => `<span class="project-tag">${tag}</span>`).join('') || ''}
-          </div>
-          <div class="project-links">
-            ${project.links?.demo ? `<a href="${project.links.demo}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Demo <span class="icon">→</span></a>` : ''}
-            ${project.links?.code ? `<a href="${project.links.code}" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Código <span class="icon">↗</span></a>` : ''}
-            <button class="btn btn-outline project-details-btn" data-project-id="${project.id}">Detalles</button>
+            ${tags?.slice(0, 3).map(tag => `<span class="project-tag">${tag}</span>`).join('') || ''}
+            ${tags?.length > 3 ? `<span class="project-tag">+${tags.length - 3}</span>` : ''}
           </div>
         </div>
       </article>
@@ -279,7 +292,24 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Initialize modal
   function initModal() {
-    // Modal will be created dynamically when needed
+    // Modal container will be created dynamically when needed
+    // Add global event listener for closing modal on outside click
+    document.addEventListener('click', (e) => {
+      const modal = document.querySelector('.project-modal');
+      if (modal && e.target.classList.contains('project-modal')) {
+        closeModal(modal);
+      }
+    });
+    
+    // Add event listener for escape key to close modal
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const modal = document.querySelector('.project-modal');
+        if (modal) {
+          closeModal(modal);
+        }
+      }
+    });
   }
   
   // Open project modal
@@ -301,11 +331,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Format features list
     const featuresList = features ? `
       <div class="modal-features">
-        <h4>Key Features</h4>
+        <h4>Características Principales</h4>
         <ul>
           ${features.map(feature => `
             <li>
-              <span class="icon">✔</span>
+              <span class="icon">✓</span>
               <span>${feature}</span>
             </li>
           `).join('')}
@@ -323,32 +353,31 @@ document.addEventListener('DOMContentLoaded', () => {
     // Format links
     const linkElements = links ? Object.entries(links).map(([type, url]) => {
       const isExternal = !url.startsWith('#');
-      const icon = type === 'demo' ? '🌐' : type === 'code' ? '💻' : '🔍';
-      const text = type === 'demo' ? 'Live Demo' : type === 'code' ? 'View Code' : 'Project Details';
+      const icon = type === 'demo' ? '→' : type === 'code' ? '↗' : '🔍';
+      const text = type === 'demo' ? 'Ver Demo' : type === 'code' ? 'Ver Código' : 'Detalles';
       const className = type === 'demo' ? 'primary' : 'secondary';
       
       return `
         <a href="${url}" 
-           class="modal-link ${className}" 
+           class="btn btn-${className}" 
            target="${isExternal ? '_blank' : ''}" 
            rel="${isExternal ? 'noopener noreferrer' : ''}">
-          <span class="icon">${icon}</span>
-          <span>${text}</span>
+          ${text} <span class="icon">${icon}</span>
         </a>
       `;
     }).join('') : '';
     
     modal.innerHTML = `
       <div class="modal-content">
-        <button class="modal-close" aria-label="Close modal">
+        <button class="modal-close" aria-label="Cerrar modal">
           <span class="icon">×</span>
         </button>
         <div class="modal-body">
           <div class="modal-image">
-            <img src="${image || '/img/projects/placeholder-large.jpg'}" alt="${title}">
+            <img src="${image || './img/projects/placeholder.jpg'}" alt="${title}">
           </div>
           <div class="modal-details">
-            <span class="modal-category">${formatCategory(categories[0] || 'project')}</span>
+            <span class="modal-category">${formatCategory(categories?.[0] || 'project')}</span>
             <h2 id="modal-title-${id}" class="modal-title">${title}</h2>
             <p id="modal-description-${id}" class="modal-description">${description}</p>
             ${featuresList}
@@ -365,12 +394,19 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(modal);
     
     // Force reflow to enable transition
-    // eslint-disable-next-line no-unused-expressions
     modal.offsetHeight;
     
     // Show modal with animation
     setTimeout(() => {
       modal.classList.add('active');
+      
+      // Add event listener to close button
+      const closeButton = modal.querySelector('.modal-close');
+      if (closeButton) {
+        closeButton.addEventListener('click', () => {
+          closeModal(modal);
+        });
+      }
       
       // Focus trap for accessibility
       const focusableElements = modal.querySelectorAll('a[href], button, [tabindex]');
@@ -380,14 +416,15 @@ document.addEventListener('DOMContentLoaded', () => {
       // Focus first element
       if (firstFocusable) firstFocusable.focus();
       
-      // Handle keyboard navigation
-      modal.addEventListener('keydown', function handleKeyDown(e) {
-        // Close on Escape
-        if (e.key === 'Escape') {
+      // Close on overlay click
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
           closeModal(modal);
-          return;
         }
-        
+      });
+      
+      // Handle keyboard navigation
+      modal.addEventListener('keydown', (e) => {
         // Trap focus inside modal
         if (e.key === 'Tab') {
           if (e.shiftKey) {
@@ -399,19 +436,6 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             firstFocusable.focus();
           }
-        }
-      });
-      
-      // Close button
-      const closeButton = modal.querySelector('.modal-close');
-      if (closeButton) {
-        closeButton.addEventListener('click', () => closeModal(modal));
-      }
-      
-      // Close on overlay click
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          closeModal(modal);
         }
       });
     }, 10);
