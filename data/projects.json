@@ -1,255 +1,86 @@
 [
   {
-    "id": "portfolio-site",
-    "title": "Personal Portfolio Website",
-    "description": "A modern, responsive portfolio website built with vanilla HTML, CSS, and JavaScript. Features a clean design, dark/light theme toggle, and smooth animations. The site showcases my projects, skills, and experience in an interactive way.",
-    "categories": ["web", "frontend", "design"],
-    "tags": ["HTML5", "CSS3", "JavaScript", "Responsive Design", "Accessibility"],
-    "image": "/img/projects/ai-chatbot.jpg",
+    "id": "fit-agent-ia",
+    "title": "App Mobile Fit Agent Potenciado con IA",
+    "description": "Aplicación mobile que permite a los usuarios crear recetas personalizadas con IA. Integra tecnología de inteligencia artificial para ofrecer recomendaciones nutricionales adaptadas a los objetivos de cada usuario.",
+    "categories": ["mobile", "ai", "fitness"],
+    "tags": ["Android", "iOS", "Windows", "Mobile", "Inteligencia Artificial"],
+    "image": "./img/projects/fit_agent_screens.png",
     "featured": true,
     "links": {
-      "demo": "https://yourportfolio.com",
-      "code": "https://github.com/yourusername/portfolio"
+      "demo": "",
+      "code": "https://github.com/Nightmarespirits/fit_agent"
     },
     "features": [
-      "Fully responsive design that works on all devices",
-      "Dark/light theme toggle with system preference detection",
-      "Smooth scroll animations and transitions",
-      "Accessible markup with proper ARIA attributes",
-      "Optimized performance with lazy loading images",
-      "SEO friendly with semantic HTML"
+      "Generación de recetas personalizadas con IA",
+      "Seguimiento de progreso y objetivos fitness",
+      "Plataforma multi-dispositivo (Android, iOS, Windows)",
+      "Recomendaciones nutricionales basadas en perfil",
+      "Interfaz intuitiva y amigable"
     ],
-    "year": 2023
+    "year": 2024
   },
   {
-    "id": "ecommerce-dashboard",
-    "title": "E-commerce Analytics Dashboard",
-    "description": "A comprehensive analytics dashboard for e-commerce businesses. This application provides real-time insights into sales, customer behavior, and inventory management with interactive charts and data visualization.",
-    "categories": ["web", "fullstack", "dashboard"],
-    "tags": ["React", "Node.js", "Express", "MongoDB", "Chart.js"],
-    "image": "/img/projects/ecommerce-dashboard.jpg",
-    "featured": true,
-    "links": {
-      "demo": "#",
-      "code": "#"
-    },
-    "features": [
-      "Real-time sales and revenue tracking",
-      "Interactive charts and data visualization",
-      "Inventory management system",
-      "Customer segmentation and analysis",
-      "Responsive design for all devices"
-    ],
-    "year": 2023
-  },
-  {
-    "id": "task-manager",
-    "title": "Task Management App",
-    "description": "A collaborative task management application that helps teams organize and track their work. Features include task assignments, due dates, priority levels, and real-time updates.",
-    "categories": ["web", "mobile", "productivity"],
-    "tags": ["Vue.js", "Firebase", "PWA", "Responsive"],
-    "image": "/img/projects/task-manager.jpg",
+    "id": "gestion-archivos",
+    "title": "Gestor de archivos",
+    "description": "Aplicación de gestión de archivos. Sistema optimizado para el control y seguimiento de operaciones internas, facilitando la toma de decisiones y mejorando la eficiencia operativa.",
+    "categories": ["web", "fullstack", "management"],
+    "tags": ["Vue.js", "Java", "Spring Boot", "Spring Security", "Spring Data", "MySQL", "JWT", "Docker", "Kubernetes", "CI/CD", "Jenkins", "Nginx", "Git", "Linux", "VSCode", "IntelliJ IDEA", "JIRA", "Agile/Scrum", "JUnit", "Jest", "Playwright", "Postman", "Swagger/OpenAPI", "TDD/BDD"],
+    "image": "./img/projects/sistema_gestor_archivos_login.png",
     "featured": false,
     "links": {
-      "demo": "#",
-      "code": "#"
+      "demo": "https://gestorarchivos-demo.netlify.app/",
+      "code": "https://github.com/Nightmarespirits/Gestor_Archivos_Web"
     },
     "features": [
-      "Real-time collaboration",
-      "Drag-and-drop interface",
-      "Offline functionality",
-      "Push notifications",
-      "User authentication"
+      "Gestión centralizada de procesos",
+      "Automatización de tareas repetitivas",
+      "Análisis de datos y generación de reportes",
+      "Sistema de alertas y notificaciones",
+      "Acceso seguro con diferentes niveles de usuario"
     ],
     "year": 2022
   },
   {
-    "id": "recipe-finder",
-    "title": "Recipe Finder App",
-    "description": "A recipe discovery application that helps users find recipes based on ingredients they have. The app includes nutritional information, step-by-step instructions, and the ability to save favorite recipes.",
-    "categories": ["web", "api", "food"],
-    "tags": ["React", "Spoonacular API", "Redux", "Styled Components"],
-    "image": "/img/projects/recipe-finder.jpg",
+    "id": "sistema-gestion-procesos",
+    "title": "Sistema de Gestión de Procesos Internos",
+    "description": "Aplicación de gestión de procesos internos de Lavanderías. Permite automatizar y optimizar las operaciones diarias, mejorando la eficiencia y reduciendo errores.",
+    "categories": ["web", "Vue JS", "SPA"],
+    "tags": ["Vue.js", "Javascript", "Node.js", "Express", "MongoDB"],
+    "image": "./img/projects/gestor_operaciones_lavanderia.png",
     "featured": true,
     "links": {
-      "demo": "#",
-      "code": "#"
+      "demo": "https://slcdemo.netlify.app/login",
+      "code": "https://github.com/Nightmarespirits/slc_Gestion_Operaciones"
     },
     "features": [
-      "Search recipes by ingredients",
-      "Filter by dietary restrictions",
-      "Nutritional information",
-      "Save favorite recipes",
-      "Meal planning"
-    ],
-    "year": 2022
-  },
-  {
-    "id": "weather-app",
-    "title": "Weather Forecast App",
-    "description": "A weather application that provides current weather conditions and forecasts. The app features a clean, intuitive interface with detailed weather data and beautiful weather animations.",
-    "categories": ["web", "mobile", "api"],
-    "tags": ["JavaScript", "OpenWeather API", "CSS Animations", "Responsive"],
-    "image": "/img/projects/weather-app.jpg",
-    "featured": false,
-    "links": {
-      "demo": "#",
-      "code": "#"
-    },
-    "features": [
-      "Current weather conditions",
-      "5-day forecast",
-      "Location-based weather",
-      "Weather alerts",
-      "Responsive design"
-    ],
-    "year": 2021
-  },
-  {
-    "id": "fitness-tracker",
-    "title": "Fitness Tracker",
-    "description": "A mobile-first fitness tracking application that helps users log workouts, track progress, and set fitness goals. The app includes exercise demonstrations and progress analytics.",
-    "categories": ["mobile", "health", "react-native"],
-    "tags": ["React Native", "Firebase", "Redux", "Expo"],
-    "image": "/img/projects/fitness-tracker.jpg",
-    "featured": false,
-    "links": {
-      "demo": "#",
-      "code": "#"
-    },
-    "features": [
-      "Workout logging",
-      "Progress tracking",
-      "Exercise library",
-      "Goal setting",
-      "Offline functionality"
+      "Sistema de gestión de procesos centralizado",
+      "Dashboard interactivo con métricas en tiempo real",
+      "Control de inventario y recursos",
+      "Generación de informes personalizados",
+      "Interfaz responsiva adaptada a diferentes dispositivos"
     ],
     "year": 2023
   },
   {
-    "id": "blog-platform",
-    "title": "Headless Blog Platform",
-    "description": "A headless CMS for bloggers with a focus on performance and developer experience. The platform includes a React frontend and a Node.js backend with a rich text editor and media management.",
-    "categories": ["web", "cms", "fullstack"],
-    "tags": ["Next.js", "Node.js", "MongoDB", "GraphQL", "Docker"],
-    "image": "/img/projects/blog-platform.jpg",
+    "id": "handmouse",
+    "title": "Handmouse",
+    "description": "Desarrollada en Python, esta app permite usar la cámara para identificar gestos y convertirlos en comandos, redefiniendo la interacción entre el usuario y la pantalla.",
+    "categories": ["web", "ai", "python"],
+    "tags": ["Python", "Computer Vision", "Gesture Recognition", "AI"],
+    "image": "./img/projects/handmouse_python_visual_computing_project.png",
     "featured": true,
     "links": {
-      "demo": "#",
-      "code": "#"
+      "demo": "https://github.com/fernandotutaya/handmouse",
+      "code": "https://github.com/fernandotutaya/handmouse"
     },
     "features": [
-      "Headless CMS architecture",
-      "Rich text editor",
-      "Image optimization",
-      "SEO friendly",
-      "Docker deployment"
+      "Reconocimiento de gestos en tiempo real",
+      "Interfaz intuitiva y fácil de usar",
+      "Procesamiento de imágenes con OpenCV",
+      "Configuración personalizada de gestos",
+      "Compatible con múltiples aplicaciones"
     ],
     "year": 2023
-  },
-  {
-    "id": "ai-chatbot",
-    "title": "AI Chatbot",
-    "description": "An AI-powered chatbot that can answer questions, provide recommendations, and assist with common tasks. The bot uses natural language processing to understand and respond to user queries.",
-    "categories": ["ai", "nlp", "web"],
-    "tags": ["Python", "TensorFlow", "Flask", "WebSockets"],
-    "image": "/img/projects/ai-chatbot.jpg",
-    "featured": false,
-    "links": {
-      "demo": "#",
-      "code": "#"
-    },
-    "features": [
-      "Natural language understanding",
-      "Context-aware responses",
-      "Multi-language support",
-      "Real-time communication",
-      "Customizable personality"
-    ],
-    "year": 2023
-  },
-  {
-    "id": "expense-tracker",
-    "title": "Expense Tracker",
-    "description": "A simple yet powerful expense tracking application that helps users monitor their spending, set budgets, and analyze their financial habits.",
-    "categories": ["web", "mobile", "finance"],
-    "tags": ["Vue.js", "Firebase", "PWA", "Chart.js"],
-    "image": "/img/projects/expense-tracker.jpg",
-    "featured": false,
-    "links": {
-      "demo": "#",
-      "code": "#"
-    },
-    "features": [
-      "Expense categorization",
-      "Budget tracking",
-      "Spending analytics",
-      "Data export",
-      "Offline support"
-    ],
-    "year": 2022
-  },
-  {
-    "id": "restaurant-website",
-    "title": "Restaurant Website",
-    "description": "A modern, responsive website for a local restaurant. The site features an online menu, reservation system, and gallery of the restaurant's dishes and ambiance.",
-    "categories": ["web", "design", "wordpress"],
-    "tags": ["WordPress", "Elementor", "WooCommerce", "Responsive Design"],
-    "image": "/img/projects/restaurant-website.jpg",
-    "featured": false,
-    "links": {
-      "demo": "#",
-      "code": "#"
-    },
-    "features": [
-      "Online menu with filtering",
-      "Table reservation system",
-      "Photo gallery",
-      "Mobile-responsive design",
-      "SEO optimized"
-    ],
-    "year": 2021
-  },
-  {
-    "id": "social-media-dashboard",
-    "title": "Social Media Dashboard",
-    "description": "A dashboard that aggregates metrics and analytics from multiple social media platforms, providing insights into audience engagement and content performance.",
-    "categories": ["web", "dashboard", "analytics"],
-    "tags": ["React", "Node.js", "MongoDB", "REST API", "OAuth"],
-    "image": "/img/projects/social-dashboard.jpg",
-    "featured": true,
-    "links": {
-      "demo": "#",
-      "code": "#"
-    },
-    "features": [
-      "Multi-platform integration",
-      "Custom reporting",
-      "Scheduled reports",
-      "Team collaboration",
-      "Data visualization"
-    ],
-    "year": 2023
-  },
-  {
-    "id": "job-board",
-    "title": "Job Board Platform",
-    "description": "A platform connecting job seekers with employers. Features include job postings, resume uploads, and an advanced search system to match candidates with relevant positions.",
-    "categories": ["web", "fullstack", "marketplace"],
-    "tags": ["Ruby on Rails", "PostgreSQL", "Elasticsearch", "Bootstrap"],
-    "image": "/img/projects/job-board.jpg",
-    "featured": false,
-    "links": {
-      "demo": "#",
-      "code": "#"
-    },
-    "features": [
-      "Job search with filters",
-      "Resume builder",
-      "Employer dashboard",
-      "Application tracking",
-      "Email notifications"
-    ],
-    "year": 2022
   }
 ]

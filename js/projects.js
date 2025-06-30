@@ -234,10 +234,10 @@ document.addEventListener('DOMContentLoaded', () => {
     return `
       <article class="project-card ${visible ? '' : 'hidden'}" data-project-id="${id}">
         <div class="project-image">
-          <img src="${visible ? (image || './img/projects/placeholder.jpg') : ''}" 
+          <img src="${visible ? (image || './img/projects/placeholder.jpg') : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'}" 
                data-src="${image || './img/projects/placeholder.jpg'}" 
                alt="${title}" 
-               loading="${visible ? 'eager' : 'lazy'}">
+               loading="lazy">
         </div>
         <div class="project-content">
           <span class="project-category">${formatCategory(categories?.[0] || 'project')}</span>
@@ -508,11 +508,20 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Initialize Intersection Observer for animations
   function initIntersectionObserver() {
-    const observer = new IntersectionObserver((entries) => {
+    const observer = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('animate');
-          observer.unobserve(entry.target);
+          const card = entry.target;
+          const img = card.querySelector('img[data-src]');
+
+          // Load image from data-src
+          if (img && img.dataset.src) {
+            img.src = img.dataset.src;
+            img.removeAttribute('data-src');
+          }
+          
+          card.classList.add('animate');
+          observer.unobserve(card);
         }
       });
     }, {

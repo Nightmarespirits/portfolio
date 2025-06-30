@@ -1,6 +1,7 @@
 [
-  { "year": "2018", "event": "Inicio de mis estudios universitarios" },
-  { "year": "2020", "event": "Primer trabajo como desarrollador Junior" },
-  { "year": "2022", "event": "Certificación en Spring Professional" },
-  { "year": "2023", "event": "Despliegue de arquitectura de microservicios" }
+  { "year": "2025", "event": "Finalizo mis estudios tecnicos IESTPFFAA." },
+  { "year": "2024", "event": "Inicio programa de practicas pre profesionales." },
+  { "year": "2023", "event": "Primer trabajo como desarrollador Junior Freelance." },
+  { "year": "2022", "event": "Inicio de carrera Análisis de Sistemas IESTPFFAA." },
+  { "year": "2018", "event": "Curso Prep Programacion con Javascript SoyHenry." }
 ]
