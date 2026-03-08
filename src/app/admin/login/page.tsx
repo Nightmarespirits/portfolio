@@ -88,14 +88,6 @@ export default function LoginPage() {
                     </button>
                 </form>
 
-                <p style={{
-                    fontSize: 'var(--text-xs)',
-                    color: 'var(--color-text-tertiary)',
-                    textAlign: 'center',
-                    fontFamily: 'var(--font-mono)',
-                }}>
-                    Demo: cualquier email + contraseña ≥ 4 caracteres
-                </p>
             </div>
         </div>
     );

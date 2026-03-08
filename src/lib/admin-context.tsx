@@ -15,6 +15,7 @@ import {
     sampleExperience,
     sampleSkills,
 } from '@/lib/data';
+import { supabase } from '@/lib/supabase';
 
 // ─── Auth State ────────────────────────────────────────────────
 
@@ -104,16 +105,35 @@ export function AdminProvider({ children }: { children: ReactNode }) {
 
     // Auth
     const login = useCallback(async (email: string, password: string) => {
-        // Demo auth — replace with Supabase when connected
-        if (email && password.length >= 4) {
+        if (!supabase) {
+            console.error('Supabase client is not initialized');
+            return false;
+        }
+
+        try {
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email,
+                password,
+            });
+
+            if (error || !data.user) {
+                console.error('Login error:', error?.message);
+                return false;
+            }
+
             setIsAuthenticated(true);
             saveState('auth', true);
             return true;
+        } catch (err) {
+            console.error('Unexpected login error:', err);
+            return false;
         }
-        return false;
     }, []);
 
     const logout = useCallback(() => {
+        if (supabase) {
+            void supabase.auth.signOut();
+        }
         setIsAuthenticated(false);
         saveState('auth', false);
     }, []);
