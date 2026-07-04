@@ -1,43 +1,50 @@
 'use client';
 
+import type { ReactNode } from 'react';
 import { useEffect } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { AdminProvider, useAdmin } from '@/lib/admin-context';
 import AdminSidebar from '@/components/admin/AdminSidebar';
 import '../../styles/admin.css';
 
-function AdminGuard({ children }: { children: React.ReactNode }) {
-    const { isAuthenticated } = useAdmin();
+function AdminGuard({ children }: { children: ReactNode }) {
+    const { initialized, isAuthenticated, loadingData } = useAdmin();
     const router = useRouter();
     const pathname = usePathname();
 
     useEffect(() => {
-        if (!isAuthenticated && pathname !== '/admin/login') {
+        if (initialized && !isAuthenticated && pathname !== '/admin/login') {
             router.replace('/admin/login');
         }
-    }, [isAuthenticated, pathname, router]);
+    }, [initialized, isAuthenticated, pathname, router]);
 
-    // Login page — no sidebar
     if (pathname === '/admin/login') {
         return <>{children}</>;
     }
 
-    // Not authenticated — show nothing while redirecting
-    if (!isAuthenticated) {
-        return null;
+    if (!initialized || (!isAuthenticated && pathname !== '/admin/login')) {
+        return (
+            <div className="admin-shell admin-shell--loading">
+                <div className="admin-loading-card">
+                    <span className="admin-loading-card__dot" />
+                    <span>{initialized ? 'Redirigiendo al acceso...' : 'Recuperando sesion...'}</span>
+                </div>
+            </div>
+        );
     }
 
     return (
         <div className="admin-layout">
             <AdminSidebar />
             <div className="admin-layout__content">
+                {loadingData && <div className="admin-sync-banner">Sincronizando contenido con Supabase...</div>}
                 {children}
             </div>
         </div>
     );
 }
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default function AdminLayout({ children }: { children: ReactNode }) {
     return (
         <AdminProvider>
             <AdminGuard>{children}</AdminGuard>

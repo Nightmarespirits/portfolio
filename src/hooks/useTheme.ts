@@ -1,44 +1,58 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import { Theme } from '@/lib/types';
-
-const STORAGE_KEY = 'portfolio-theme';
+import { useCallback, useSyncExternalStore } from 'react';
+import {
+    getCurrentThemeSettings,
+    setSiteThemeMode,
+    setSiteThemePreset,
+    setSiteThemeSettings,
+    subscribeToTheme,
+    syncRemoteThemeSettings,
+    toggleSiteThemeMode,
+} from '@/lib/theme';
+import type { SiteThemeSettings, ThemeMode, ThemePresetId } from '@/lib/types';
 
 export function useTheme() {
-    const [theme, setThemeState] = useState<Theme>('dark');
-    const [mounted, setMounted] = useState(false);
+    const themeSettings = useSyncExternalStore(
+        subscribeToTheme,
+        getCurrentThemeSettings,
+        getCurrentThemeSettings,
+    );
+    const mounted = useSyncExternalStore(
+        () => () => undefined,
+        () => true,
+        () => false,
+    );
 
-    useEffect(() => {
-        setMounted(true);
-        const stored = localStorage.getItem(STORAGE_KEY) as Theme | null;
-        if (stored === 'light' || stored === 'dark') {
-            setThemeState(stored);
-            document.documentElement.setAttribute('data-theme', stored);
-        } else {
-            // Default to dark, check system preference
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const initial: Theme = prefersDark ? 'dark' : 'light';
-            setThemeState(initial);
-            document.documentElement.setAttribute('data-theme', initial);
-            localStorage.setItem(STORAGE_KEY, initial);
-        }
+    const toggleThemeMode = useCallback(() => {
+        toggleSiteThemeMode();
     }, []);
 
-    const toggleTheme = useCallback(() => {
-        setThemeState((prev) => {
-            const next: Theme = prev === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', next);
-            localStorage.setItem(STORAGE_KEY, next);
-            return next;
-        });
+    const setThemeMode = useCallback((nextThemeMode: ThemeMode, persistAsOverride = false) => {
+        setSiteThemeMode(nextThemeMode, { animate: true, modeLocked: persistAsOverride });
     }, []);
 
-    const setTheme = useCallback((t: Theme) => {
-        setThemeState(t);
-        document.documentElement.setAttribute('data-theme', t);
-        localStorage.setItem(STORAGE_KEY, t);
+    const setThemePreset = useCallback((nextThemePreset: ThemePresetId, modeLocked = false) => {
+        setSiteThemePreset(nextThemePreset, { animate: true, modeLocked });
     }, []);
 
-    return { theme, toggleTheme, setTheme, mounted };
+    const applyThemeSettings = useCallback((nextThemeSettings: SiteThemeSettings, modeLocked = false) => {
+        setSiteThemeSettings(nextThemeSettings, { animate: true, modeLocked });
+    }, []);
+
+    const syncThemeSettings = useCallback((nextThemeSettings: SiteThemeSettings, force = false) => {
+        syncRemoteThemeSettings(nextThemeSettings, { animate: true, force });
+    }, []);
+
+    return {
+        themeSettings,
+        themeMode: themeSettings.theme_mode,
+        themePreset: themeSettings.theme_preset,
+        toggleThemeMode,
+        setThemeMode,
+        setThemePreset,
+        applyThemeSettings,
+        syncThemeSettings,
+        mounted,
+    };
 }

@@ -1,191 +1,166 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { FormEvent, useMemo, useState } from 'react';
+import AdminStatus from '@/components/admin/AdminStatus';
 import { useAdmin } from '@/lib/admin-context';
 import { Skill } from '@/lib/types';
 
-const categories = ['Frontend', 'Backend', 'Infraestructura', 'Diseño', 'Otro'];
+const categories = ['Frontend', 'Backend & Core', 'Bases de Datos', 'DevOps & Herramientas', 'Producto', 'Otro'];
 
-const emptySkill: Omit<Skill, 'id'> = {
+const emptySkill: Omit<Skill, 'id' | 'created_at'> = {
     name: '',
     category: 'Frontend',
-    proficiency: 50,
+    proficiency: 60,
     sort_order: 0,
     is_visible: true,
 };
 
 export default function SkillsPage() {
-    const { skills, addSkill, updateSkill, deleteSkill } = useAdmin();
+    const { skills, addSkill, updateSkill, deleteSkill, moveSkill } = useAdmin();
     const [showModal, setShowModal] = useState(false);
     const [editingId, setEditingId] = useState<string | null>(null);
     const [form, setForm] = useState(emptySkill);
+    const [submitting, setSubmitting] = useState(false);
     const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
 
+    const rows = useMemo(() => [...skills].sort((a, b) => a.sort_order - b.sort_order), [skills]);
+
     const openNew = () => {
-        setForm(emptySkill);
+        setForm({ ...emptySkill, sort_order: rows.length });
         setEditingId(null);
         setShowModal(true);
     };
 
-    const openEdit = (skill: Skill) => {
-        setForm(skill);
-        setEditingId(skill.id);
+    const openEdit = (entry: Skill) => {
+        setForm({
+            name: entry.name,
+            category: entry.category,
+            proficiency: entry.proficiency,
+            sort_order: entry.sort_order,
+            is_visible: entry.is_visible,
+        });
+        setEditingId(entry.id);
         setShowModal(true);
     };
 
-    const handleSubmit = (e: FormEvent) => {
-        e.preventDefault();
+    const handleSubmit = async (event: FormEvent) => {
+        event.preventDefault();
+        setSubmitting(true);
         if (editingId) {
-            updateSkill(editingId, form);
+            await updateSkill(editingId, form);
         } else {
-            addSkill(form);
+            await addSkill(form);
         }
+        setSubmitting(false);
         setShowModal(false);
     };
-
-    // Group by category for display
-    const grouped = skills.reduce<Record<string, Skill[]>>((acc, skill) => {
-        if (!acc[skill.category]) acc[skill.category] = [];
-        acc[skill.category].push(skill);
-        return acc;
-    }, {});
 
     return (
         <>
             <div className="admin-header">
-                <h1 className="admin-header__title">Habilidades</h1>
+                <div>
+                    <h1 className="admin-header__title">Habilidades</h1>
+                    <p className="admin-header__subtitle">Categorias, dominio y orden de competencias que alimentan el modulo Dominio.</p>
+                </div>
                 <div className="admin-header__actions">
-                    <button className="btn btn--primary" onClick={openNew}>
-                        + Nueva habilidad
-                    </button>
+                    <button className="btn btn--primary" onClick={openNew}>+ Nueva habilidad</button>
                 </div>
             </div>
             <div className="admin-content">
-                {skills.length === 0 ? (
-                    <div className="empty-state">
-                        <div className="empty-state__icon">◇</div>
-                        <div className="empty-state__title">Sin habilidades</div>
-                        <div className="empty-state__desc">Agrega tus habilidades técnicas.</div>
-                        <button className="btn btn--primary" onClick={openNew}>Agregar habilidad</button>
-                    </div>
-                ) : (
+                <AdminStatus />
+                <div className="table-shell">
                     <table className="data-table">
                         <thead>
                             <tr>
-                                <th>Nombre</th>
-                                <th>Categoría</th>
+                                <th>Orden</th>
+                                <th>Habilidad</th>
+                                <th>Categoria</th>
                                 <th>Nivel</th>
                                 <th>Visible</th>
                                 <th style={{ textAlign: 'right' }}>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {Object.entries(grouped).map(([category, categorySkills]) =>
-                                categorySkills.map((skill, idx) => (
-                                    <tr key={skill.id}>
-                                        {idx === 0 && (
-                                            <td rowSpan={categorySkills.length} style={{ verticalAlign: 'top', borderRight: '1px solid var(--color-border-subtle)' }}>
-                                                <span className="badge badge--accent">{category}</span>
-                                            </td>
-                                        )}
-                                        <td style={{ fontWeight: 500 }}>{skill.name}</td>
-                                        <td>
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: '120px' }}>
-                                                <div className="skill-item__bar" style={{ flex: 1, height: '4px' }}>
-                                                    <div className="skill-item__fill" style={{ width: `${skill.proficiency}%` }} />
-                                                </div>
-                                                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--color-text-tertiary)' }}>
-                                                    {skill.proficiency}%
-                                                </span>
+                            {rows.map((entry, index) => (
+                                <tr key={entry.id}>
+                                    <td>
+                                        <div className="table-order">
+                                            <span className="badge badge--muted">#{index + 1}</span>
+                                            <div className="table-order__buttons">
+                                                <button className="btn btn--ghost btn--sm" onClick={() => void moveSkill(entry.id, 'up')} disabled={index === 0}>Subir</button>
+                                                <button className="btn btn--ghost btn--sm" onClick={() => void moveSkill(entry.id, 'down')} disabled={index === rows.length - 1}>Bajar</button>
                                             </div>
-                                        </td>
-                                        <td>
-                                            <button
-                                                className={`toggle ${skill.is_visible ? 'toggle--active' : ''}`}
-                                                onClick={() => updateSkill(skill.id, { is_visible: !skill.is_visible })}
-                                            >
-                                                <span className="toggle__dot" />
-                                            </button>
-                                        </td>
-                                        <td>
-                                            <div className="data-table__actions">
-                                                <button className="btn btn--ghost btn--sm" onClick={() => openEdit(skill)}>Editar</button>
-                                                {confirmDelete === skill.id ? (
-                                                    <>
-                                                        <button className="btn btn--danger btn--sm" onClick={() => { deleteSkill(skill.id); setConfirmDelete(null); }}>Confirmar</button>
-                                                        <button className="btn btn--ghost btn--sm" onClick={() => setConfirmDelete(null)}>Cancelar</button>
-                                                    </>
-                                                ) : (
-                                                    <button className="btn btn--danger btn--sm" onClick={() => setConfirmDelete(skill.id)}>Eliminar</button>
-                                                )}
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))
-                            )}
+                                        </div>
+                                    </td>
+                                    <td><strong>{entry.name}</strong></td>
+                                    <td><span className="badge badge--muted">{entry.category}</span></td>
+                                    <td>
+                                        <div className="table-skill">
+                                            <div className="skill-item__bar"><div className="skill-item__fill" style={{ width: `${entry.proficiency}%` }} /></div>
+                                            <span>{entry.proficiency}%</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button className={`toggle ${entry.is_visible ? 'toggle--active' : ''}`} onClick={() => void updateSkill(entry.id, { is_visible: !entry.is_visible })}>
+                                            <span className="toggle__dot" />
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <div className="data-table__actions">
+                                            <button className="btn btn--ghost btn--sm" onClick={() => openEdit(entry)}>Editar</button>
+                                            {confirmDelete === entry.id ? (
+                                                <>
+                                                    <button className="btn btn--danger btn--sm" onClick={() => void deleteSkill(entry.id).then(() => setConfirmDelete(null))}>Confirmar</button>
+                                                    <button className="btn btn--ghost btn--sm" onClick={() => setConfirmDelete(null)}>Cancelar</button>
+                                                </>
+                                            ) : (
+                                                <button className="btn btn--danger btn--sm" onClick={() => setConfirmDelete(entry.id)}>Eliminar</button>
+                                            )}
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
-                )}
+                </div>
             </div>
 
             {showModal && (
                 <div className="modal-overlay" onClick={() => setShowModal(false)}>
-                    <div className="modal" onClick={(e) => e.stopPropagation()}>
+                    <div className="modal" onClick={(event) => event.stopPropagation()}>
                         <div className="modal__header">
                             <h2 className="modal__title">{editingId ? 'Editar habilidad' : 'Nueva habilidad'}</h2>
-                            <button className="btn btn--ghost btn--icon" onClick={() => setShowModal(false)}>✕</button>
+                            <button className="btn btn--ghost btn--icon" onClick={() => setShowModal(false)}>x</button>
                         </div>
                         <form onSubmit={handleSubmit}>
                             <div className="modal__body">
                                 <div className="form-group">
                                     <label className="form-label form-label--required">Nombre</label>
-                                    <input
-                                        className="form-input"
-                                        value={form.name}
-                                        onChange={(e) => setForm({ ...form, name: e.target.value })}
-                                        required
-                                        placeholder="React, Node.js, Docker..."
-                                    />
+                                    <input className="form-input" value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} required />
                                 </div>
-
                                 <div className="form-group">
-                                    <label className="form-label form-label--required">Categoría</label>
-                                    <select
-                                        className="form-input form-select"
-                                        value={form.category}
-                                        onChange={(e) => setForm({ ...form, category: e.target.value })}
-                                    >
-                                        {categories.map((cat) => (
-                                            <option key={cat} value={cat}>{cat}</option>
-                                        ))}
+                                    <label className="form-label form-label--required">Categoria</label>
+                                    <select className="form-input form-select" value={form.category} onChange={(event) => setForm({ ...form, category: event.target.value })}>
+                                        {categories.map((category) => <option key={category} value={category}>{category}</option>)}
                                     </select>
                                 </div>
-
                                 <div className="form-group">
                                     <label className="form-label">Nivel de dominio: {form.proficiency}%</label>
-                                    <input
-                                        type="range"
-                                        min="0"
-                                        max="100"
-                                        value={form.proficiency}
-                                        onChange={(e) => setForm({ ...form, proficiency: parseInt(e.target.value) })}
-                                        style={{ width: '100%', accentColor: 'var(--color-accent)' }}
-                                    />
+                                    <input type="range" min="0" max="100" value={form.proficiency} onChange={(event) => setForm({ ...form, proficiency: Number(event.target.value) })} className="form-range" />
                                 </div>
-
-                                <div className="form-group">
-                                    <label className="form-label">Orden</label>
-                                    <input
-                                        type="number"
-                                        className="form-input"
-                                        value={form.sort_order}
-                                        onChange={(e) => setForm({ ...form, sort_order: parseInt(e.target.value) || 0 })}
-                                    />
+                                <div className="form-row">
+                                    <div className="form-group">
+                                        <label className="form-label">Orden</label>
+                                        <input type="number" className="form-input" value={form.sort_order} onChange={(event) => setForm({ ...form, sort_order: Number(event.target.value) || 0 })} />
+                                    </div>
+                                    <div className="form-group form-group--inline">
+                                        <label className="check-row"><input type="checkbox" checked={form.is_visible} onChange={(event) => setForm({ ...form, is_visible: event.target.checked })} /> Visible</label>
+                                    </div>
                                 </div>
                             </div>
                             <div className="modal__footer">
                                 <button type="button" className="btn btn--secondary" onClick={() => setShowModal(false)}>Cancelar</button>
-                                <button type="submit" className="btn btn--primary">{editingId ? 'Guardar' : 'Crear'}</button>
+                                <button type="submit" className="btn btn--primary" disabled={submitting}>{submitting ? 'Guardando...' : editingId ? 'Guardar cambios' : 'Crear habilidad'}</button>
                             </div>
                         </form>
                     </div>

@@ -1,0 +1,218 @@
+:root {
+    --color-accent-soft: hsla(220, 76%, 60%, 0.12);
+    --color-accent-border: hsla(220, 76%, 60%, 0.22);
+    --color-brand-start: hsl(220, 78%, 66%);
+    --color-brand-end: hsl(220, 74%, 56%);
+    --color-brand-glow: hsla(220, 80%, 64%, 0.24);
+    --color-brand-shine: hsla(0, 0%, 100%, 0.65);
+    --theme-transition-duration: 620ms;
+    --brandmark-mask-url: url('/portfolio/brandmark-mask.png');
+    --preset-accent-h: 220;
+    --preset-accent-s: 76%;
+    --preset-accent-dark-l: 60%;
+    --preset-accent-light-l: 48%;
+    --preset-accent-hover-dark-l: 67%;
+    --preset-accent-hover-light-l: 42%;
+    --preset-brand-start-dark-l: 68%;
+    --preset-brand-end-dark-l: 54%;
+    --preset-brand-start-light-l: 52%;
+    --preset-brand-end-light-l: 43%;
+}
+
+[data-theme-preset='cobalt'] {
+    --preset-accent-h: 220;
+    --preset-accent-s: 76%;
+    --preset-accent-dark-l: 60%;
+    --preset-accent-light-l: 48%;
+    --preset-accent-hover-dark-l: 67%;
+    --preset-accent-hover-light-l: 42%;
+    --preset-brand-start-dark-l: 68%;
+    --preset-brand-end-dark-l: 54%;
+    --preset-brand-start-light-l: 52%;
+    --preset-brand-end-light-l: 43%;
+}
+
+[data-theme-preset='azure'] {
+    --preset-accent-h: 203;
+    --preset-accent-s: 84%;
+    --preset-accent-dark-l: 58%;
+    --preset-accent-light-l: 46%;
+    --preset-accent-hover-dark-l: 64%;
+    --preset-accent-hover-light-l: 41%;
+    --preset-brand-start-dark-l: 66%;
+    --preset-brand-end-dark-l: 52%;
+    --preset-brand-start-light-l: 50%;
+    --preset-brand-end-light-l: 41%;
+}
+
+[data-theme-preset='teal'] {
+    --preset-accent-h: 186;
+    --preset-accent-s: 66%;
+    --preset-accent-dark-l: 50%;
+    --preset-accent-light-l: 40%;
+    --preset-accent-hover-dark-l: 57%;
+    --preset-accent-hover-light-l: 36%;
+    --preset-brand-start-dark-l: 58%;
+    --preset-brand-end-dark-l: 44%;
+    --preset-brand-start-light-l: 46%;
+    --preset-brand-end-light-l: 36%;
+}
+
+[data-theme-preset='emerald'] {
+    --preset-accent-h: 158;
+    --preset-accent-s: 62%;
+    --preset-accent-dark-l: 48%;
+    --preset-accent-light-l: 38%;
+    --preset-accent-hover-dark-l: 55%;
+    --preset-accent-hover-light-l: 34%;
+    --preset-brand-start-dark-l: 56%;
+    --preset-brand-end-dark-l: 42%;
+    --preset-brand-start-light-l: 44%;
+    --preset-brand-end-light-l: 34%;
+}
+
+[data-theme='dark'] {
+    --accent-h: var(--preset-accent-h);
+    --accent-s: var(--preset-accent-s);
+    --accent-l: var(--preset-accent-dark-l);
+    --color-accent: hsl(var(--preset-accent-h), var(--preset-accent-s), var(--preset-accent-dark-l));
+    --color-accent-dim: hsla(var(--preset-accent-h), var(--preset-accent-s), var(--preset-accent-dark-l), 0.16);
+    --color-accent-hover: hsl(var(--preset-accent-h), var(--preset-accent-s), var(--preset-accent-hover-dark-l));
+    --color-accent-soft: hsla(var(--preset-accent-h), var(--preset-accent-s), var(--preset-accent-dark-l), 0.12);
+    --color-accent-border: hsla(var(--preset-accent-h), var(--preset-accent-s), var(--preset-accent-dark-l), 0.24);
+    --color-brand-start: hsl(var(--preset-accent-h), var(--preset-accent-s), var(--preset-brand-start-dark-l));
+    --color-brand-end: hsl(var(--preset-accent-h), var(--preset-accent-s), var(--preset-brand-end-dark-l));
+    --color-brand-glow: hsla(var(--preset-accent-h), var(--preset-accent-s), var(--preset-brand-start-dark-l), 0.28);
+}
+
+[data-theme='light'] {
+    --accent-h: var(--preset-accent-h);
+    --accent-s: var(--preset-accent-s);
+    --accent-l: var(--preset-accent-light-l);
+    --color-accent: hsl(var(--preset-accent-h), var(--preset-accent-s), var(--preset-accent-light-l));
+    --color-accent-dim: hsla(var(--preset-accent-h), var(--preset-accent-s), var(--preset-accent-light-l), 0.14);
+    --color-accent-hover: hsl(var(--preset-accent-h), var(--preset-accent-s), var(--preset-accent-hover-light-l));
+    --color-accent-soft: hsla(var(--preset-accent-h), var(--preset-accent-s), var(--preset-accent-light-l), 0.1);
+    --color-accent-border: hsla(var(--preset-accent-h), var(--preset-accent-s), var(--preset-accent-light-l), 0.18);
+    --color-brand-start: hsl(var(--preset-accent-h), var(--preset-accent-s), var(--preset-brand-start-light-l));
+    --color-brand-end: hsl(var(--preset-accent-h), var(--preset-accent-s), var(--preset-brand-end-light-l));
+    --color-brand-glow: hsla(var(--preset-accent-h), var(--preset-accent-s), var(--preset-brand-start-light-l), 0.18);
+}
+
+body,
+.interface__atmosphere,
+.theme-toggle,
+.theme-toggle__indicator,
+.theme-toggle__icon,
+.brandmark__glow,
+.brandmark__fill,
+.admin-sidebar,
+.dashboard-card,
+.dashboard-hero,
+.admin-card,
+.status-bar,
+.node,
+.panel,
+.panel__header {
+    transition:
+        background var(--duration-normal) var(--ease-out),
+        background-color var(--duration-normal) var(--ease-out),
+        border-color var(--duration-normal) var(--ease-out),
+        color var(--duration-normal) var(--ease-out),
+        box-shadow var(--duration-normal) var(--ease-out),
+        opacity var(--duration-normal) var(--ease-out),
+        transform var(--duration-normal) var(--ease-out),
+        filter var(--duration-normal) var(--ease-out);
+}
+
+.brandmark {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-width: 0;
+}
+
+.brandmark--sm .brandmark__glyph {
+    width: 34px;
+}
+
+.brandmark--md .brandmark__glyph {
+    width: 40px;
+}
+
+.brandmark--lg .brandmark__glyph {
+    width: 52px;
+}
+
+.brandmark__glyph {
+    position: relative;
+    flex-shrink: 0;
+    aspect-ratio: 818 / 505;
+}
+
+.brandmark__glow,
+.brandmark__fill,
+.brandmark__shine {
+    position: absolute;
+    inset: 0;
+    -webkit-mask-image: var(--brandmark-mask-url);
+    mask-image: var(--brandmark-mask-url);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+}
+
+.brandmark__glow {
+    background: linear-gradient(135deg, var(--color-brand-start), var(--color-brand-end));
+    opacity: 0.42;
+    filter: blur(12px);
+    transform: translateY(2px) scale(1.03);
+}
+
+.brandmark__fill {
+    background: linear-gradient(132deg, var(--color-brand-start), var(--color-brand-end) 58%, color-mix(in srgb, var(--color-brand-start) 68%, white 32%));
+    background-size: 180% 180%;
+    animation: brandMarkFlow 8.4s var(--ease-smooth) infinite;
+}
+
+.brandmark__shine {
+    background: linear-gradient(115deg, transparent 18%, hsla(0, 0%, 100%, 0.58) 50%, transparent 82%);
+    opacity: 0.22;
+    transform: translateX(-120%);
+    animation: brandMarkSheen 8.4s var(--ease-out) infinite;
+}
+
+.brandmark__label {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+html[data-theme-transition='active'] .brandmark__glow {
+    animation: themeBrandPulse var(--theme-transition-duration) var(--ease-out);
+}
+
+html[data-theme-transition='active'] .brandmark__fill {
+    animation:
+        brandMarkFlow 8.4s var(--ease-smooth) infinite,
+        themeBrandTint var(--theme-transition-duration) var(--ease-out);
+}
+
+html[data-theme-transition='active'] .brandmark__shine {
+    animation:
+        brandMarkSheen 8.4s var(--ease-out) infinite,
+        themeBrandShine var(--theme-transition-duration) var(--ease-out);
+}
+
+html[data-theme-transition='active'] .interface__atmosphere {
+    animation: themeAtmosphereShift var(--theme-transition-duration) var(--ease-out);
+}
+
+html[data-theme-transition='active'] .theme-toggle__indicator {
+    animation: themeToggleBloom var(--theme-transition-duration) var(--ease-spring);
+}

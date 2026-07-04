@@ -198,3 +198,114 @@
         transition-duration: 0.01ms !important;
     }
 }
+@keyframes brandMarkFlow {
+    0%,
+    100% {
+        background-position: 0% 50%;
+        filter: saturate(0.98) brightness(0.98);
+    }
+
+    50% {
+        background-position: 100% 50%;
+        filter: saturate(1.08) brightness(1.04);
+    }
+}
+
+@keyframes brandMarkSheen {
+    0%,
+    100% {
+        opacity: 0.12;
+        transform: translateX(-120%);
+    }
+
+    45% {
+        opacity: 0.2;
+    }
+
+    55% {
+        opacity: 0.34;
+        transform: translateX(120%);
+    }
+}
+
+@keyframes themeAtmosphereShift {
+    0% {
+        opacity: 0.72;
+        transform: scale(0.985);
+    }
+
+    60% {
+        opacity: 1;
+        transform: scale(1.02);
+    }
+
+    100% {
+        opacity: 0.9;
+        transform: scale(1);
+    }
+}
+
+@keyframes themeBrandPulse {
+    0% {
+        opacity: 0.18;
+        filter: blur(8px);
+    }
+
+    50% {
+        opacity: 0.6;
+        filter: blur(16px);
+    }
+
+    100% {
+        opacity: 0.42;
+        filter: blur(12px);
+    }
+}
+
+@keyframes themeBrandTint {
+    0% {
+        transform: scale(0.985);
+        filter: saturate(0.96) brightness(0.94);
+    }
+
+    50% {
+        transform: scale(1.01);
+        filter: saturate(1.12) brightness(1.06);
+    }
+
+    100% {
+        transform: scale(1);
+        filter: saturate(1) brightness(1);
+    }
+}
+
+@keyframes themeBrandShine {
+    0% {
+        opacity: 0.08;
+    }
+
+    50% {
+        opacity: 0.38;
+    }
+
+    100% {
+        opacity: 0.22;
+    }
+}
+
+@keyframes themeToggleBloom {
+    0% {
+        box-shadow: 0 0 0 0 var(--color-brand-glow);
+        filter: saturate(0.96);
+    }
+
+    50% {
+        box-shadow: 0 0 0 8px color-mix(in srgb, var(--color-brand-glow) 42%, transparent);
+        filter: saturate(1.1);
+    }
+
+    100% {
+        box-shadow: 0 6px 18px var(--color-brand-glow);
+        filter: saturate(1);
+    }
+}

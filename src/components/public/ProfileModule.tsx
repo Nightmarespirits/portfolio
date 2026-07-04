@@ -1,41 +1,47 @@
 'use client';
 
-import { usePortfolioData } from '@/hooks/usePortfolioData';
+import ModuleState from '@/components/public/ModuleState';
+import { PortfolioStats, Profile } from '@/lib/types';
 
-export default function ProfileModule() {
-    const { profile } = usePortfolioData();
-    const p = profile;
+interface ProfileModuleProps {
+    profile: Profile | null;
+    stats: PortfolioStats;
+    loading: boolean;
+    error: string | null;
+}
+
+export default function ProfileModule({ profile, stats, loading, error }: ProfileModuleProps) {
+    if (loading) {
+        return <ModuleState title="Cargando perfil" message="Sincronizando identidad y metricas desde Supabase." />;
+    }
+
+    if (error) {
+        return <ModuleState title="Perfil no disponible" message={error} tone="error" />;
+    }
+
+    if (!profile) {
+        return <ModuleState title="Perfil vacio" message="Todavia no hay un perfil cargado desde el panel administrativo." />;
+    }
 
     return (
         <div className="module stagger-children">
             <div className="about">
                 <div className="about__intro">
                     <div>
-                        <h2 className="about__name">{p.name}</h2>
-                        <p className="about__title">{p.title}</p>
+                        <h2 className="about__name">{profile.name}</h2>
+                        <p className="about__title">{profile.title}</p>
                     </div>
 
-                    <p className="about__bio">{p.bio}</p>
+                    <p className="about__bio">{profile.bio}</p>
 
                     <div className="about__meta">
-                        <div className="about__meta-item">
-                            <span className="about__meta-icon" aria-hidden="true">◉</span>
-                            <span>{p.location}</span>
-                        </div>
-                        <div className="about__meta-item">
-                            <span className="about__meta-icon" aria-hidden="true">◈</span>
-                            <span>{p.email}</span>
-                        </div>
+                        {profile.location && <div className="about__meta-item"><span className="about__meta-icon" aria-hidden="true">*</span><span>{profile.location}</span></div>}
+                        {profile.email && <div className="about__meta-item"><span className="about__meta-icon" aria-hidden="true">@</span><span>{profile.email}</span></div>}
                     </div>
 
-                    {p.cv_url && (
-                        <a
-                            href={p.cv_url}
-                            className="about__cv-btn"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            <span aria-hidden="true">↓</span>
+                    {profile.cv_url && (
+                        <a href={profile.cv_url} className="about__cv-btn" target="_blank" rel="noopener noreferrer">
+                            <span aria-hidden="true">v</span>
                             Descargar CV
                         </a>
                     )}
@@ -43,22 +49,10 @@ export default function ProfileModule() {
 
                 <div className="about__details">
                     <div className="about__stat-grid">
-                        <div className="about__stat">
-                            <div className="about__stat-value">5+</div>
-                            <div className="about__stat-label">Años de experiencia</div>
-                        </div>
-                        <div className="about__stat">
-                            <div className="about__stat-value">15+</div>
-                            <div className="about__stat-label">Proyectos entregados</div>
-                        </div>
-                        <div className="about__stat">
-                            <div className="about__stat-value">8+</div>
-                            <div className="about__stat-label">Tecnologías dominadas</div>
-                        </div>
-                        <div className="about__stat">
-                            <div className="about__stat-value">3</div>
-                            <div className="about__stat-label">Empresas impactadas</div>
-                        </div>
+                        <div className="about__stat"><div className="about__stat-value">{stats.yearsOfExperience}+</div><div className="about__stat-label">Anos de experiencia</div></div>
+                        <div className="about__stat"><div className="about__stat-value">{stats.projectCount}</div><div className="about__stat-label">Proyectos visibles</div></div>
+                        <div className="about__stat"><div className="about__stat-value">{stats.techCount}</div><div className="about__stat-label">Tecnologias activas</div></div>
+                        <div className="about__stat"><div className="about__stat-value">{stats.companyCount}</div><div className="about__stat-label">Contextos impactados</div></div>
                     </div>
                 </div>
             </div>

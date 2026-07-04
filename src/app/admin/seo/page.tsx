@@ -1,99 +1,105 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { FormEvent, useMemo, useState } from 'react';
+import AdminStatus from '@/components/admin/AdminStatus';
 import { useAdmin } from '@/lib/admin-context';
 
-export default function SeoPage() {
-    const { profile, updateProfile } = useAdmin();
-    const [form, setForm] = useState({
-        seo_title: profile.seo_title,
-        seo_description: profile.seo_description,
-        seo_keywords: profile.seo_keywords,
-    });
-    const [saved, setSaved] = useState(false);
+interface SeoFormState {
+    seo_title: string;
+    seo_description: string;
+    seo_keywords: string;
+}
 
-    const handleSubmit = (e: FormEvent) => {
-        e.preventDefault();
-        updateProfile(form);
-        setSaved(true);
-        setTimeout(() => setSaved(false), 2000);
+function SeoForm({ initialValue }: { initialValue: SeoFormState }) {
+    const { updateProfile } = useAdmin();
+    const [form, setForm] = useState(initialValue);
+    const [saving, setSaving] = useState(false);
+
+    const handleSubmit = async (event: FormEvent) => {
+        event.preventDefault();
+        setSaving(true);
+        await updateProfile(form);
+        setSaving(false);
     };
+
+    return (
+        <form id="seo-form" onSubmit={handleSubmit} className="admin-stack admin-stack--wide">
+            <div className="admin-card">
+                <div className="form-group">
+                    <label className="form-label">Titulo SEO</label>
+                    <input
+                        className="form-input"
+                        value={form.seo_title}
+                        onChange={(event) => setForm((current) => ({ ...current, seo_title: event.target.value }))}
+                        placeholder="Tu nombre - Tu especialidad"
+                    />
+                    <span className={`field-help ${form.seo_title.length > 60 ? 'field-help--error' : ''}`}>{form.seo_title.length}/60 recomendado</span>
+                </div>
+
+                <div className="form-group">
+                    <label className="form-label">Meta descripcion</label>
+                    <textarea
+                        className="form-input form-textarea"
+                        rows={4}
+                        value={form.seo_description}
+                        onChange={(event) => setForm((current) => ({ ...current, seo_description: event.target.value }))}
+                        placeholder="Resumen claro de tu propuesta profesional."
+                    />
+                    <span className={`field-help ${form.seo_description.length > 160 ? 'field-help--error' : ''}`}>{form.seo_description.length}/160 recomendado</span>
+                </div>
+
+                <div className="form-group">
+                    <label className="form-label">Keywords</label>
+                    <input
+                        className="form-input"
+                        value={form.seo_keywords}
+                        onChange={(event) => setForm((current) => ({ ...current, seo_keywords: event.target.value }))}
+                        placeholder="portfolio, software engineer, java, react"
+                    />
+                    <span className="field-help">Separalas por comas para mantenerlas legibles.</span>
+                </div>
+            </div>
+
+            <div className="admin-card">
+                <div className="module__label">Vista previa</div>
+                <div className="seo-preview">
+                    <div className="seo-preview__title">{form.seo_title || 'Titulo del sitio'}</div>
+                    <div className="seo-preview__url">nightmarespirits.github.io/portfolio</div>
+                    <div className="seo-preview__description">
+                        {form.seo_description || 'La descripcion SEO aparecera aqui cuando completes el formulario.'}
+                    </div>
+                </div>
+            </div>
+
+            <div className="admin-header__actions" style={{ justifyContent: 'flex-end' }}>
+                <button type="submit" className="btn btn--primary" disabled={saving}>
+                    {saving ? 'Guardando...' : 'Guardar SEO'}
+                </button>
+            </div>
+        </form>
+    );
+}
+
+export default function SeoPage() {
+    const { profile } = useAdmin();
+    const initialValue = useMemo<SeoFormState>(() => ({
+        seo_title: profile.seo_title || '',
+        seo_description: profile.seo_description || '',
+        seo_keywords: profile.seo_keywords || '',
+    }), [profile.seo_description, profile.seo_keywords, profile.seo_title]);
+    const formKey = useMemo(() => `${profile.id}-${profile.updated_at || 'draft'}-seo`, [profile.id, profile.updated_at]);
 
     return (
         <>
             <div className="admin-header">
-                <h1 className="admin-header__title">SEO</h1>
-                <div className="admin-header__actions">
-                    {saved && <span className="badge badge--success">✓ Guardado</span>}
+                <div>
+                    <h1 className="admin-header__title">SEO</h1>
+                    <p className="admin-header__subtitle">Metadatos runtime para titulo, descripcion y keywords del portfolio.</p>
                 </div>
             </div>
             <div className="admin-content">
-                <form onSubmit={handleSubmit} style={{ maxWidth: '700px', display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
-                    <div className="form-group">
-                        <label className="form-label">Título SEO</label>
-                        <input
-                            className="form-input"
-                            value={form.seo_title}
-                            onChange={(e) => setForm({ ...form, seo_title: e.target.value })}
-                            placeholder="Tu nombre — Tu título profesional"
-                        />
-                        <span style={{ fontSize: 'var(--text-xs)', color: form.seo_title.length > 60 ? 'var(--color-error)' : 'var(--color-text-tertiary)', fontFamily: 'var(--font-mono)' }}>
-                            {form.seo_title.length}/60 caracteres
-                        </span>
-                    </div>
-
-                    <div className="form-group">
-                        <label className="form-label">Meta descripción</label>
-                        <textarea
-                            className="form-input form-textarea"
-                            value={form.seo_description}
-                            onChange={(e) => setForm({ ...form, seo_description: e.target.value })}
-                            rows={3}
-                            placeholder="Descripción breve de tu portafolio para buscadores..."
-                        />
-                        <span style={{ fontSize: 'var(--text-xs)', color: form.seo_description.length > 160 ? 'var(--color-error)' : 'var(--color-text-tertiary)', fontFamily: 'var(--font-mono)' }}>
-                            {form.seo_description.length}/160 caracteres
-                        </span>
-                    </div>
-
-                    <div className="form-group">
-                        <label className="form-label">Palabras clave</label>
-                        <input
-                            className="form-input"
-                            value={form.seo_keywords}
-                            onChange={(e) => setForm({ ...form, seo_keywords: e.target.value })}
-                            placeholder="portafolio, desarrollador, ingeniero..."
-                        />
-                        <span style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-tertiary)' }}>
-                            Separadas por comas
-                        </span>
-                    </div>
-
-                    {/* Preview */}
-                    <div style={{ marginTop: 'var(--space-4)' }}>
-                        <div className="module__label">Vista previa en Google</div>
-                        <div style={{
-                            background: 'var(--color-bg-surface)',
-                            padding: 'var(--space-5)',
-                            borderRadius: 'var(--radius-md)',
-                            border: '1px solid var(--color-border-subtle)',
-                        }}>
-                            <div style={{ color: '#1a0dab', fontSize: 'var(--text-md)', fontWeight: 500, marginBottom: '4px' }}>
-                                {form.seo_title || 'Título de tu sitio'}
-                            </div>
-                            <div style={{ color: '#006621', fontSize: 'var(--text-xs)', fontFamily: 'var(--font-mono)', marginBottom: '4px' }}>
-                                tu-sitio.com
-                            </div>
-                            <div style={{ color: 'var(--color-text-secondary)', fontSize: 'var(--text-sm)', lineHeight: 1.5 }}>
-                                {form.seo_description || 'Tu meta descripción aparecerá aquí en los resultados de búsqueda...'}
-                            </div>
-                        </div>
-                    </div>
-
-                    <button type="submit" className="btn btn--primary" style={{ width: 'fit-content' }}>
-                        Guardar configuración SEO
-                    </button>
-                </form>
+                <AdminStatus />
+                <SeoForm key={formKey} initialValue={initialValue} />
             </div>
         </>
     );
