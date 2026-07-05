@@ -1,27 +1,21 @@
 name: Deploy Next.js site to Pages
 
 on:
-  # Ejecuta la acción cuando haces 'push' a la rama `main`
-  # Si tu rama principal se llama `master`, cámbialo abajo.
   push:
-    branches: ["main"]
+    branches: ["master"]
 
-  # Permite ejecutar este flujo de trabajo manualmente desde la pestaña Actions
   workflow_dispatch:
 
-# Configura los permisos para el GITHUB_TOKEN que permiten el despliegue en GH Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Permite solo un despliegue concurrente a la vez
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
-  # Trabajo de construcción (Build)
   build:
     runs-on: ubuntu-latest
     steps:
@@ -41,6 +35,7 @@ jobs:
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_STORAGE_BUCKET: ${{ secrets.NEXT_PUBLIC_STORAGE_BUCKET }}
         run: npm run build
 
       - name: Subir artefacto
@@ -48,7 +43,6 @@ jobs:
         with:
           path: ./out
 
-  # Trabajo de despliegue (Deploy)
   deploy:
     environment:
       name: github-pages
